@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf</title>
+    <link rel="stylesheet" href="/signup/signup.css">
+</head>
+<body>
+    <header>
+        <h1 id="app-title">Bookshelf</h1>
+    </header>
+    <main>
+        <form id="signup-form">
+            <label for="signup-username-input">Username: </label>
+            <input type="text" id="signup-username-input" placeholder="Enter a username">
+            <label for="signup-email-input">Email: </label>
+            <input type="text" id="signup-email-input" placeholder="Enter your email address">
+            <label for="signup-birthday-input">Birthday: </label>
+            <input type="date" id="signup-birthday-input">
+            <label for="signup-pronoun-input">Pronouns (optional): </label>
+            <input type="text" id="signup-pronoun-input">
+            <label for="signup-password-input">Password: </label>
+            <input type="password" id="signup-password-input" placeholder="Enter your password">
+            <label for="signup-password-confirm">Confirm Password: </label>
+            <input type="password" id="signup-password-confirm">
+            <button type="button" id="signup-cancel-btn">Cancel</button>
+            <button type="reset">Clear</button>
+            <button type="submit">Submit</button>
+        </form>
+    </main>
+    <footer>
+
+    </footer>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/signup/signup.js"></script>
+</body>
+</html>
