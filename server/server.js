@@ -7,6 +7,8 @@ const path = require('path');
 const {seed} = require('./controllers/seed.js');
 const {getAllUsers, getUser, createUser, updateUser, changePassword,
     changePermissions, deleteUser, login} = require('./controllers/userController.js');
+const {getAllStories, getStory, searchByTitle, getHighestRated, getLowestRated,
+    getByAuthor, createStory, editStory, changeVisibility, updateRating, deleteStory} = require('./controllers/storyController.js');
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -27,6 +29,11 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/login/login.html'));
 });
 
+// Write Story Page
+app.get('/write', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/write_story/writeStory.html'));
+});
+
 // Seed
 app.post("/seed", seed);
 
@@ -39,5 +46,18 @@ app.put('/api/users/password/:id', changePassword);
 app.put('/api/users/permissions/:id', changePermissions);
 app.delete('/api/users/:id', deleteUser);
 app.post('/api/login', login);
+
+// Manage Stories
+app.get('/api/stories', getAllStories);
+app.get('/api/stories/:id', getStory);
+app.get('/api/stories/search', searchByTitle);
+app.get('/api/stories/highest_rated', getHighestRated);
+app.get('/api/stories/lowest_rated', getLowestRated);
+app.get('/api/stories/author', getByAuthor);
+app.post('/api/stories', createStory);
+app.put('/api/stories/:id', editStory);
+app.put('/api/stories/visibility/:id', changeVisibility);
+app.put('/api/stories/rating/:id', updateRating);
+app.delete('/api/stories/:id', deleteStory);
 
 app.listen(SERVER_PORT, () => console.log(`Listening on ${SERVER_PORT}`));

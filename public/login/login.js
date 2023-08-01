@@ -1,4 +1,5 @@
 const loginForm = document.getElementById('login-form');
+const loginCancelBtn = document.getElementById('login-cancel-btn');
 
 function handleLogin(e) {
     e.preventDefault();
@@ -22,3 +23,5 @@ function handleLogin(e) {
 }
 
 loginForm.addEventListener('submit', handleLogin);
+
+loginCancelBtn.addEventListener('click', () => location.href = '/');

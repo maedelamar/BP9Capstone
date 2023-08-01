@@ -26,10 +26,10 @@ module.exports = {
     },
 
     getUser: (req, res) => {
-        const id = req.params;
+        const {id} = req.params;
 
         sequelize.query(`
-            select * from bkslf_Users where user_id = ${id};
+            select * from bkslf_Users where user_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
@@ -61,9 +61,9 @@ module.exports = {
         const {username, email, birthday, pronouns} = req.body;
 
         sequelize.query(`
-            update bkslf_Users set username = '${username}', email = '@${email}' where user_id = ${id};
+            update bkslf_Users set username = '${username}', email = '${email}' where user_id = ${+id};
 
-            update bkslf_UserDetails set birthday = ${birthday}, pronouns = '${pronouns}' where user_id = ${id};
+            update bkslf_UserDetails set birthday = ${birthday}, pronouns = '${pronouns}' where user_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(400).send(dbErr));
@@ -78,7 +78,7 @@ module.exports = {
 
         bcrypt.hash(cipher, saltRounds, (error, passHash) => {
             sequelize.query(`
-                update bkslf_Passwords set passHash = '${passHash}' where user_id = ${id};
+                update bkslf_Passwords set passHash = '${passHash}' where user_id = ${+id};
             `)
             .then(dbRes => res.status(200).send(dbRes[0]))
             .catch(dbErr => res.status(400).send(dbErr));
@@ -90,7 +90,7 @@ module.exports = {
         const {permission} = req.body;
 
         sequelize.query(`
-            update bkslf_UserDetails set permission = ${permission} where user_id = ${id};
+            update bkslf_UserDetails set permission = ${permission} where user_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
@@ -100,9 +100,9 @@ module.exports = {
         const {id} = req.params;
 
         sequelize.query(`
-            delete from bkslf_Users where user_id = ${id};
+            delete from bkslf_Users where user_id = ${+id} cascade;
 
-            delete from bkslf_Stories where user_id = ${id};
+            delete from bkslf_Stories where user_id = ${+id} cascade;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));

@@ -1,4 +1,5 @@
 const signupForm = document.getElementById('signup-form');
+const signupCancelBtn = document.getElementById('signup-cancel-btn');
 
 function handleSignup(e) {
     e.preventDefault();
@@ -33,3 +34,5 @@ function handleSignup(e) {
 }
 
 signupForm.addEventListener('submit', handleSignup);
+
+signupCancelBtn.addEventListener('click', () => location.href = '/');
