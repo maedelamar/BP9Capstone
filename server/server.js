@@ -55,10 +55,10 @@ app.post('/api/login', login);
 // Manage Stories
 app.get('/api/stories', getAllStories);
 app.get('/api/stories/:id', getStory);
-app.get('/api/stories/search', searchByTitle);
-app.get('/api/stories/highest_rated', getHighestRated);
-app.get('/api/stories/latest', getLatest);
-app.get('/api/stories/author', getByAuthor);
+app.get('/api/search_stories', searchByTitle);
+app.get('/api/highest_rated_stories', getHighestRated);
+app.get('/api/latest_stories', getLatest);
+app.get('/api/stories_by_author', getByAuthor);
 app.post('/api/stories', isAuthenticated, createStory);
 app.put('/api/stories/:id', isAuthenticated, editStory);
 app.put('/api/stories/visibility/:id', isAuthenticated, changeVisibility);

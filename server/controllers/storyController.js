@@ -42,7 +42,8 @@ module.exports = {
 
     getHighestRated: (req, res) => {
         sequelize.query(`
-            select * from bkslf_Stories where is_public = true order by rating desc limit 10;
+            select s.*, username from bkslf_Stories as s join bkslf_Users as u
+            on s.author = u.user_id where is_public = true order by rating desc limit 10;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
@@ -50,10 +51,14 @@ module.exports = {
 
     getLatest: (req, res) => {
         sequelize.query(`
-            select * from bkslf_Stories where is_public = true order by time_posted desc limit 10;
+            select s.*, username from bkslf_Stories as s join bkslf_Users as u
+            on s.author = u.user_id where is_public = true order by time_posted desc limit 10;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr)
+        });
     },
 
     getByAuthor: (req, res) => {

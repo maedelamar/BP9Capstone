@@ -5,6 +5,7 @@ const welcomeMsg = document.getElementById('welcome-msg');
 const writeStoryBtn = document.getElementById('make-story-btn');
 
 const recentSection = document.getElementById('recent-stories');
+const highestRatedSection = document.getElementById('highest-rated');
 
 
 
@@ -33,21 +34,49 @@ if (!token) {
     .catch(err => {
         alert("Axios error. Check the console.");
         console.log(err);
-    })
+    });
 }
 
-axios.get('/api/stories/latest')
+axios.get('/api/latest_stories')
 .then(res => {
+    recentSection.innerHTML = '';
     res.data.forEach(element => {
-        const title = element.title;
-        axios.get(`/api/users/${element.author}`)
-        .then(subRes => {
-            const author = subRes.user_id;
-            const p = document.createElement('p');
-            p.textContent = `${title} by ${author}`;
-            recentSection.appendChild(p);
-        })
-        .catch(subErr => console.log(subErr));
+        const title = document.createElement('a');
+        title.className = "front-page-title";
+        title.href = `/api/stories/${element.story_id}`;
+        title.textContent = element.title;
+        const by = document.createElement('em');
+        by.textContent = " by ";
+        const author = document.createElement('a');
+        author.href = `/api/users/${element.author}`;
+        author.textContent = element.username;
+        const p = document.createElement('p');
+        p.appendChild(title);
+        p.appendChild(by);
+        p.appendChild(author);
+        recentSection.appendChild(p);
+    });
+})
+.catch(err => console.log(err));
+
+axios.get('/api/highest_rated_stories')
+.then(res => {
+    highestRatedSection.innerHTML = '';
+    res.data.forEach(element => {
+        const title = document.createElement('a');
+        title.className = "front-page-title"
+        title.href = `/api/stories/${element.story_id}`;
+        title.textContent = element.title;
+        const by = document.createElement('em');
+        by.textContent = " by ";
+        const author = document.createElement('a');
+        author.href = `/api/users/${element.author}`;
+        author.textContent = element.username;
+        const p = document.createElement('p');
+        p.appendChild(title);
+        p.appendChild(by);
+        p.appendChild(author);
+        highestRatedSection.appendChild(p);
     });
 })
 .catch(err => console.log(err));
