@@ -34,7 +34,7 @@ module.exports = {
         const {search} = req.query;
 
         sequelize.query(`
-            select * from bkslf_Stories where title like %${search}%;
+            select * from bkslf_Stories where title like %${search}% and is_public = true;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
@@ -42,15 +42,15 @@ module.exports = {
 
     getHighestRated: (req, res) => {
         sequelize.query(`
-            select * from bkslf_Stories order by rating desc limit 10;
+            select * from bkslf_Stories where is_public = true order by rating desc limit 10;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
     },
 
-    getLowestRated: (req, res) => {
+    getLatest: (req, res) => {
         sequelize.query(`
-            select * from bkslf_Stories order by rating limit 10;
+            select * from bkslf_Stories where is_public = true order by time_posted desc limit 10;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
@@ -60,7 +60,8 @@ module.exports = {
         const {author} = req.query;
 
         sequelize.query(`
-            select * from bkslf_Stories where author = (select user_id from bkslf_Users where username like '${author}%');
+            select * from bkslf_Stories
+            where author = (select user_id from bkslf_Users where username like '${author}%') and is_public = true;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));

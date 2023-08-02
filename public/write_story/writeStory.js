@@ -1,7 +1,7 @@
 const writeStoryForm = document.getElementById('write-story-form');
 const writeCancelBtn = document.getElementById('write-cancel-btn');
 
-const author = 1; // Change this later
+let author = sessionStorage.getItem("userId");
 
 function handleWrite(e) {
     e.preventDefault();
@@ -18,14 +18,19 @@ function handleWrite(e) {
 
     const timePosted = new Date();
 
-    axios.post('/api/stories', {author, title, story, timePosted, isPublic})
+    const body = {author, title, story, timePosted, isPublic};
+
+    const headers = {headers: {authorization: sessionStorage.getItem('token')}};
+    console.log(headers);
+
+    axios.post('/api/stories', body, headers)
     .then(res => {
         alert("Story posted!");
         location.href = '/';
     })
     .catch(err => {
-        alert("Axios error. Check the console.");
-        console.log(err);
+        alert("You are not authorized to post your story. Please log in.");
+        location.href = '/login';
     });
 }
 

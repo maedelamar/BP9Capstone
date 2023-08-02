@@ -8,18 +8,16 @@ function handleLogin(e) {
     const password = document.getElementById('login-password-input').value;
 
     axios.post('/api/login', {email, password})
-    .then(res => {
-        if (res.data.success) {
-            alert("Successfully logged in");
-            location.href = '/';
-        } else {
-            alert(res.data.message);
-        }
+    .then(async res => {
+        const token = await res.data.token;
+        alert("Successfully logged in");
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("userId", res.data.user_id);
+        location.href = '/';
     })
     .catch(err => {
-        alert("Axios error, check console");
-        console.log(err);
-    })
+        alert("Bad username or password");
+    });
 }
 
 loginForm.addEventListener('submit', handleLogin);

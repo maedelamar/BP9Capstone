@@ -38,7 +38,6 @@ module.exports = {
                 user_id int references bkslf_Users(user_id),
                 birthday timestamp not null,
                 pronouns varchar(10),
-                profile_pic text not null,
                 permission int not null,
                 can_comment boolean not null 
             );
@@ -71,9 +70,8 @@ module.exports = {
             insert into bkslf_Passwords (user_id, passHash)
             values ((select user_id from bkslf_Users where email = 'prehistoricdolphin789@gmail.com'), '$2a$15$8O5pskigIapi/Kp29dH1EuRtkbJokX4VUsaMwUUTrZzTKM9s.hcgy');
 
-            insert into bkslf_UserDetails (user_id, birthday, pronouns, profile_pic, permission, can_comment)
+            insert into bkslf_UserDetails (user_id, birthday, pronouns, permission, can_comment)
             values ((select user_id from bkslf_Users where email = 'prehistoricdolphin789@gmail.com'),'2000-10-08', 'she/her',
-            'https://ed.devmountain.com/media/CACHE/images/students/20230425_160846_UNwUpeI/9c428434db8a651cedc874845de1d3ef.jpg',
             3, true);
         `)
         .then(dbRes => {

@@ -76,3 +76,8 @@ header {
     background-color: black;
     color: white;
 }
+
+#welcome-msg {
+    text-align: center;
+    font-size: 30pt;
+}

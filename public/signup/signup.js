@@ -23,13 +23,15 @@ function handleSignup(e) {
     }
 
     axios.post('/api/users', {username, email, password, birthday, pronouns})
-    .then(res => {
+    .then(async res => {
+        const token = await res.data.token;
         alert("Welcome to Bookshelf");
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("userId", res.data.user_id);
         location.href = '/';
     })
     .catch(err => {
-        alert("Axios error. Check the console.");
-        console.log(err);
+        alert("Bad username or password.");
     });
 }
 
