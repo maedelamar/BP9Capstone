@@ -39,6 +39,11 @@ if (!token) {
 
 axios.get('/api/latest_stories')
 .then(res => {
+    if (res.data.length === 0) {
+        recentSection.innerHTML = '<p>No stories yet. You can change that!</p>';
+        return;
+    }
+
     recentSection.innerHTML = '';
     res.data.forEach(element => {
         recentSection.appendChild(document.createElement('br'));
@@ -62,6 +67,11 @@ axios.get('/api/latest_stories')
 
 axios.get('/api/highest_rated_stories')
 .then(res => {
+    if (res.data.length === 0) {
+        highestRatedSection.innerHTML = '<p>No stories yet. You can change that!</p>';
+        return;
+    }
+
     highestRatedSection.innerHTML = '';
     res.data.forEach(element => {
         highestRatedSection.appendChild(document.createElement('br'));

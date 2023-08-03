@@ -29,12 +29,12 @@ axios.get(`/api/stories/${storyId}`)
         deleteBtn.addEventListener('click', () => {
             const willDelete = confirm("Are you sure you want to delete this story? This cannot be undone.");
             if (willDelete) {
-                axios.delete(`/api/stories/${storyId}`)
+                axios.delete(`/api/stories/${storyId}`, {headers: {authorization: sessionStorage.getItem('token')}})
                 .then(res => alert("Story deleted."))
                 .catch(err => {
                     alert("Axios error. Check the console.");
                     console.log(err);
-                })
+                });
             }
         });
 
