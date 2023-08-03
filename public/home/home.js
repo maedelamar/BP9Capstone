@@ -9,11 +9,6 @@ const highestRatedSection = document.getElementById('highest-rated');
 
 
 
-function destorySession() {
-    sessionStorage.clear();
-    location.href = '/';
-}
-
 let token = sessionStorage.getItem('token');
 let userId = sessionStorage.getItem('userId');
 
@@ -25,8 +20,8 @@ if (!token) {
     welcomeMsg.textContent = "Welcome, Guest";
     document.getElementById('make-story-btn').hidden = true;
 } else {
-    logContainer.innerHTML = `<button id="logout-btn" class="log-btn">Log Out</button>`;
-    document.getElementById('logout-btn').addEventListener('click', destorySession);
+    logContainer.innerHTML = `<button id="profile-btn" class="log-btn">Profile</button>`;
+    document.getElementById('profile-btn').addEventListener('click', () => location.href = `/profile/${+userId}`);
     document.getElementById('make-story-btn').hidden = false;
 
     axios.get(`/api/users/${userId}`)
@@ -56,7 +51,7 @@ axios.get('/api/latest_stories')
         const by = document.createElement('em');
         by.textContent = " by ";
         const author = document.createElement('a');
-        author.href = `/api/users/${element.author}`;
+        author.href = `/profile/${element.author}`;
         author.textContent = element.username;
         const p = document.createElement('p');
         p.appendChild(title);
@@ -84,7 +79,7 @@ axios.get('/api/highest_rated_stories')
         const by = document.createElement('em');
         by.textContent = " by ";
         const author = document.createElement('a');
-        author.href = `/api/users/${element.author}`;
+        author.href = `/profile/${element.author}`;
         author.textContent = element.username;
         const p = document.createElement('p');
         p.appendChild(title);

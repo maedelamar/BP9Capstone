@@ -43,10 +43,17 @@ module.exports = {
         const {id} = req.params;
 
         sequelize.query(`
-            select * from bkslf_Users where user_id = ${+id};
+            select u.*, d.* from bkslf_Users as u join bkslf_UserDetails as d
+            on u.user_id = d.user_id where u.user_id = ${+id};
         `)
-        .then(dbRes => res.status(200).send(dbRes[0][0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .then(dbRes => {
+            dbRes[0][0].birthday = dbRes[0][0].birthday.toISOString().split('T')[0];
+            res.status(200).send(dbRes[0][0]);
+        })
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     createUser: (req, res) => {
@@ -58,7 +65,7 @@ module.exports = {
             select count(*) from bkslf_Users where username = '${username}';
         `)
         .then(dbRes => {
-            if (dbRes[0][0]) {
+            if (+dbRes[0][0].count !== 0) {
                 return res.status(400).send("Username is already taken.");
             }
 
@@ -66,7 +73,7 @@ module.exports = {
                 select count(*) from bkslf_Users where email = '${email}';
             `)
             .then(dbRes1 => {
-                if (dbRes1[0][0]) {
+                if (+dbRes1[0][0].count) {
                     return res.status(400).send("Email is already in use.");
                 }
 
@@ -87,8 +94,8 @@ module.exports = {
                     select * from bkslf_Users where email = '${email}';
                 `)
                 .then(dbRes2 => {
-                    const token = createToken(email, dbRes[0][0].user_id);
-                    const userToSend = {...dbRes[0][0], token};
+                    const token = createToken(email, dbRes2[0][0].user_id);
+                    const userToSend = {...dbRes2[0][0], token};
                     res.status(200).send(userToSend);
                 })
                 .catch(dbErr2 => res.status(500).send(dbErr2));
@@ -105,10 +112,13 @@ module.exports = {
         sequelize.query(`
             update bkslf_Users set username = '${username}', email = '${email}' where user_id = ${+id};
 
-            update bkslf_UserDetails set birthday = ${birthday}, pronouns = '${pronouns}' where user_id = ${+id};
+            update bkslf_UserDetails set birthday = '${birthday}', pronouns = '${pronouns}' where user_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0][0]))
-        .catch(dbErr => res.status(400).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(400).send(dbErr)
+        });
     },
 
     changePassword: (req, res) => {
@@ -142,12 +152,19 @@ module.exports = {
         const {id} = req.params;
 
         sequelize.query(`
-            delete from bkslf_Users where user_id = ${+id} cascade;
+            delete from bkslf_Passwords where user_id = ${+id};
 
-            delete from bkslf_Stories where user_id = ${+id} cascade;
+            delete from bkslf_UserDetails where user_id = ${+id};
+
+            delete from bkslf_Users where user_id = ${+id};
+
+            delete from bkslf_Stories where author = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0][0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     login: (req, res) => {
@@ -179,5 +196,27 @@ module.exports = {
             res.status(200).send(userToSend);
         })
         .catch(dbErr => res.status(500).send(dbErr));
+    },
+
+    checkPassword: (req, res) => {
+        const {id, password} = req.body;
+
+        if (password.includes("'") || password.includes(';') || password.includes('(') || password.includes(')') || password.includes('=')) {
+            return res.status(400).send("We know what you're trying to do.");
+        }
+
+        const cipher = password.split('').map(character => toCipher(character)).join('');
+
+        sequelize.query(`
+            select passHash from bkslf_Passwords where user_id = ${+id};
+        `)
+        .then(dbRes => {
+            const isCorrect = bcrypt.compareSync(cipher, dbRes[0][0].passhash);
+            res.status(200).send(isCorrect);
+        })
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        })
     }
 };

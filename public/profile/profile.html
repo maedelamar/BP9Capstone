@@ -11,12 +11,27 @@
         <h1 id="app-title">Bookshelf</h1>
     </header>
     <main>
+        <h2 id="author-name">Loading...</h2>
+        <br><br><br><br>
+        <section id="author-stories">
 
+        </section>
+
+        <div id="nav" class="overlay">
+            <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
+
+            <div class="overlay-content">
+                <a href="#" id="profile-update-link">Update Profile</a>
+                <a href="#" id="password-change-link">Change Password</a>
+                <a href="#" id="profile-delete-link">Delete Profile</a>
+            </div>
+        </div>
     </main>
     <footer>
 
     </footer>
 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/profile/profile.js"></script>
 </body>
 </html>

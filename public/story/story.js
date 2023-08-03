@@ -6,6 +6,11 @@ const userId = +sessionStorage.getItem('userId');
 
 axios.get(`/api/stories/${storyId}`)
 .then(res => {
+    if (!res.data) {
+        location.href = '/';
+        return;
+    }
+
     titleHeader.textContent = `${res.data.title} by ${res.data.username}`;
     storySection.innerHTML = '';
 

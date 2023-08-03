@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf - Change Password</title>
+    <link rel="stylesheet" href="/profile/password/profilePass.css">
+</head>
+<body>
+    <header>
+        <h1 id="app-title">Bookshelf</h1>
+    </header>
+    <main>
+        <form id="chng-pass-form">
+            <label for="password-input">Password: </label>
+            <input type="password" id="password-input" placeholder="Enter your password">
+            <label for="password-confirm">Confirm Password: </label>
+            <input type="password" id="password-confirm">
+            <div id="chng-pass-btns">
+                <button type="button" id="pass-cancel-btn">Cancel</button>
+                <button type="reset">Clear</button>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </main>
+    <footer>
+
+    </footer>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/profile/password/profilePass.js"></script>
+</body>
+</html>

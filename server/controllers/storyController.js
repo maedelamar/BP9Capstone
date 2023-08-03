@@ -63,12 +63,40 @@ module.exports = {
         });
     },
 
-    getByAuthor: (req, res) => {
-        const {author} = req.query;
+    getByAuthorPublic: (req, res) => {
+        const {id} = req.params;
 
         sequelize.query(`
             select * from bkslf_Stories
-            where author = (select user_id from bkslf_Users where username like '${author}%') and is_public = true;
+            where author = ${+id} and is_public = true order by time_posted desc limit 15;
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
+    },
+
+    getByAuthor: (req, res) => {
+        const {id} = req.params;
+
+        sequelize.query(`
+            select * from bkslf_Stories where author = ${+id} order by time_posted desc limit 25;
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
+    },
+
+    searchByAuthor: (req, res) => {
+        const {author} = req.query;
+
+        sequelize.query(`
+            select s.*, username from bkslf_Stories as s join bkslf_Users as u on s.author = u.user_id
+            where author = (select user_id from bkslf_Users where username like '${author}%') and is_public = true
+            order by time_posted desc;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));

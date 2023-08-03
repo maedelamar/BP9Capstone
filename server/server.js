@@ -10,9 +10,9 @@ const corsOptions = {exposedHeaders: 'Authorization'};
 const {seed} = require('./controllers/seed.js');
 const {isAuthenticated} = require('./controllers/isAuthenticated.js');
 const {getAllUsers, getUser, createUser, updateUser, changePassword,
-    changePermissions, deleteUser, login} = require('./controllers/userController.js');
-const {getAllStories, getStory, searchByTitle, getHighestRated, getLatest,
-    getByAuthor, createStory, editStory, changeVisibility, updateRating, deleteStory} = require('./controllers/storyController.js');
+    changePermissions, deleteUser, login, checkPassword} = require('./controllers/userController.js');
+const {getAllStories, getStory, searchByTitle, getHighestRated, getLatest, getByAuthorPublic, getByAuthor,
+    searchByAuthor, createStory, editStory, changeVisibility, updateRating, deleteStory} = require('./controllers/storyController.js');
 
 app.use(express.json());
 app.use(cors(corsOptions));
@@ -49,6 +49,26 @@ app.get('/edit/:id', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/edit/edit.html'));
 });
 
+// Profile Page
+app.get('/profile/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/profile/profile.html'));
+});
+
+// Update Profile Page
+app.get('/update_profile', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/profile/update/profileUpdate.html'));
+});
+
+// Change Password Page
+app.get('/change_password', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/profile/password/profilePass.html'));
+});
+
+// Delete Profile Page
+app.get('/delete_profile', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/profile/delete/profileDel.html'));
+});
+
 // Seed
 app.post("/seed", seed);
 
@@ -61,6 +81,7 @@ app.put('/api/users/password/:id', isAuthenticated, changePassword);
 app.put('/api/users/permissions/:id', isAuthenticated, changePermissions);
 app.delete('/api/users/:id', isAuthenticated, deleteUser);
 app.post('/api/login', login);
+app.post('/api/password', isAuthenticated, checkPassword);
 
 // Manage Stories
 app.get('/api/stories', getAllStories);
@@ -68,7 +89,9 @@ app.get('/api/stories/:id', getStory);
 app.get('/api/search_stories', searchByTitle);
 app.get('/api/highest_rated_stories', getHighestRated);
 app.get('/api/latest_stories', getLatest);
-app.get('/api/stories_by_author', getByAuthor);
+app.get('/api/author_stories_public/:id', getByAuthorPublic);
+app.get('/api/author_stories/:id', isAuthenticated, getByAuthor);
+app.get('/api/search_author', searchByAuthor);
 app.post('/api/stories', isAuthenticated, createStory);
 app.put('/api/stories/:id', isAuthenticated, editStory);
 app.put('/api/stories/visibility/:id', isAuthenticated, changeVisibility);

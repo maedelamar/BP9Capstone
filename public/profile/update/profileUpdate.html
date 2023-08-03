@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf - Update Profile</title>
+    <link rel="stylesheet" href="/profile/update/profileUpdate.css">
+</head>
+<body>
+    <header>
+        <h1 id="app-title">Bookshelf</h1>
+    </header>
+    <main>
+        <form id="update-form">
+            <label for="update-username-input">Username: </label>
+            <input type="text" id="update-username-input" placeholder="Enter a username">
+            <label for="update-email-input">Email: </label>
+            <input type="text" id="update-email-input" placeholder="Enter your email address">
+            <label for="update-birthday-input">Birthday: </label>
+            <input type="date" id="update-birthday-input">
+            <label for="update-pronoun-input">Pronouns (optional): </label>
+            <input type="text" id="update-pronoun-input">
+            <div id="update-form-options">
+                <button type="button" id="update-cancel-btn">Cancel</button>
+                <button type="reset">Clear</button>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </main>
+    <footer>
+
+    </footer>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/profile/update/profileUpdate.js"></script>
+</body>
+</html>
