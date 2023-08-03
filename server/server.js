@@ -39,6 +39,16 @@ app.get('/write', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/write_story/writeStory.html'));
 });
 
+// View Story Page
+app.get('/story/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/story/story.html'));
+});
+
+// Edit Story Page
+app.get('/edit/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/edit/edit.html'));
+});
+
 // Seed
 app.post("/seed", seed);
 

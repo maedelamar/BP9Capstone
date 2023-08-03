@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf</title>
+    <link rel="stylesheet" href="/edit/edit.css">
+</head>
+<body>
+    <header>
+        <h1 id="app-title">Bookshelf</h1>
+    </header>
+    <main>
+        <form id="edit-story-form">
+            <h2>Edit Your Story</h2>
+            <label for="edit-title-input">Title: </label>
+            <input type="text" id="edit-title-input" placeholder="Loading Title...">
+            <label for="edit-story-input">Story: </label>
+            <textarea name="edit-story-input" id="edit-story-input" cols="30" rows="10" placeholder="Loading Story..."></textarea>
+            <div id="edit-btns">
+                <button type="button" id="edit-cancel-btn">Cancel</button>
+                <button type="reset">Clear</button>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </main>
+    <footer>
+
+    </footer>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/edit/edit.js"></script>
+</body>
+</html>

@@ -14,7 +14,7 @@ const sequelize = new Sequelize(CONNECTION_STRING, {
 module.exports = {
     getAllStories: (req, res) => {
         sequelize.query(`
-            select * from bkslf_Stories;
+            select s.*, username from bkslf_Stories as s join bkslf_Users as u on s.author = u.user_id;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
@@ -24,9 +24,10 @@ module.exports = {
         const {id} = req.params;
 
         sequelize.query(`
-            select * from bkslf_Stories where story_id = ${+id};
+            select s.*, username from bkslf_Stories as s join bkslf_Users as u
+            on s.author = u.user_id where story_id = ${+id};
         `)
-        .then(dbRes => res.status(200).send(dbRes[0]))
+        .then(dbRes => res.status(200).send(dbRes[0][0]))
         .catch(dbErr => res.status(500).send(dbErr));
     },
 
@@ -34,7 +35,8 @@ module.exports = {
         const {search} = req.query;
 
         sequelize.query(`
-            select * from bkslf_Stories where title like %${search}% and is_public = true;
+            select s.*, username from bkslf_Stories as s join bkslf_Users as u
+            on s.author = u.user_id where title like %${search}% and is_public = true;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));

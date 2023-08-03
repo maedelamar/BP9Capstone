@@ -41,9 +41,10 @@ axios.get('/api/latest_stories')
 .then(res => {
     recentSection.innerHTML = '';
     res.data.forEach(element => {
+        recentSection.appendChild(document.createElement('br'));
         const title = document.createElement('a');
         title.className = "front-page-title";
-        title.href = `/api/stories/${element.story_id}`;
+        title.href = `/story/${element.story_id}`;
         title.textContent = element.title;
         const by = document.createElement('em');
         by.textContent = " by ";
@@ -63,9 +64,10 @@ axios.get('/api/highest_rated_stories')
 .then(res => {
     highestRatedSection.innerHTML = '';
     res.data.forEach(element => {
+        highestRatedSection.appendChild(document.createElement('br'));
         const title = document.createElement('a');
         title.className = "front-page-title"
-        title.href = `/api/stories/${element.story_id}`;
+        title.href = `/story/${element.story_id}`;
         title.textContent = element.title;
         const by = document.createElement('em');
         by.textContent = " by ";
