@@ -49,7 +49,8 @@ module.exports = {
                 story text not null,
                 time_posted timestamp not null,
                 is_public boolean not null,
-                rating float
+                rating int not null,
+                rateCount int not null
             );
 
             create table bkslf_Comments (

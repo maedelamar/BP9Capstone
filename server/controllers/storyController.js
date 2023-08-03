@@ -106,11 +106,14 @@ module.exports = {
         const {author, title, story, timePosted, isPublic} = req.body;
 
         sequelize.query(`
-            insert into bkslf_Stories (author, title, story, time_posted, is_public, rating)
-            values (${+author}, '${title}', '${story}', '${timePosted}', ${isPublic}, 0);
+            insert into bkslf_Stories (author, title, story, time_posted, is_public, rating, rateCount)
+            values (${+author}, '${title}', '${story}', '${timePosted}', ${isPublic}, 0, 0);
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     editStory: (req, res) => {
@@ -140,7 +143,7 @@ module.exports = {
         const {rating} = req.body;
 
         sequelize.query(`
-            update bkslf_Stories set rating = ${+rating} where story_id = ${+id};
+            update bkslf_Stories set rating = rating + ${+rating}, rateCount = rateCount + 1 where story_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
