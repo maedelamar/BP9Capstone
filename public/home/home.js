@@ -23,9 +23,11 @@ if (!token) {
     document.getElementById('login-btn').addEventListener('click', () => location.href = '/login');
     document.getElementById('signup-btn').addEventListener('click', () => location.href = '/signup');
     welcomeMsg.textContent = "Welcome, Guest";
+    document.getElementById('make-story-btn').hidden = true;
 } else {
     logContainer.innerHTML = `<button id="logout-btn" class="log-btn">Log Out</button>`;
     document.getElementById('logout-btn').addEventListener('click', destorySession);
+    document.getElementById('make-story-btn').hidden = false;
 
     axios.get(`/api/users/${userId}`)
     .then(res => {

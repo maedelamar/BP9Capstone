@@ -9,8 +9,7 @@ const cancelEditBtn = document.getElementById('edit-cancel-btn');
 axios.get(`/api/stories/${storyId}`)
 .then(res => {
     if (userId !== res.data.author) {
-        console.log(userId);
-        console.log(res.data.author);
+        location.href = `/story/${storyId}`;
         return;
     }
 

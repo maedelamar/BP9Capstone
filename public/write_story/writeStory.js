@@ -3,6 +3,10 @@ const writeCancelBtn = document.getElementById('write-cancel-btn');
 
 let author = sessionStorage.getItem("userId");
 
+if (!author) {
+    location.href = '/';
+}
+
 function handleWrite(e) {
     e.preventDefault();
 
