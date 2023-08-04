@@ -13,6 +13,8 @@ const {getAllUsers, getUser, createUser, updateUser, changePassword,
     changePermissions, deleteUser, login, checkPassword} = require('./controllers/userController.js');
 const {getAllStories, getStory, searchByTitle, getHighestRated, getLatest, getByAuthorPublic, getByAuthor,
     searchByAuthor, createStory, editStory, changeVisibility, updateRating, deleteStory} = require('./controllers/storyController.js');
+const {getStoryComments, getComment, getCommentsByUser, createComment,
+    editComment, removeComment} = require('./controllers/commentController.js');
 
 app.use(express.json());
 app.use(cors(corsOptions));
@@ -97,5 +99,13 @@ app.put('/api/stories/:id', isAuthenticated, editStory);
 app.put('/api/stories/visibility/:id', isAuthenticated, changeVisibility);
 app.put('/api/stories/rating/:id', isAuthenticated, updateRating);
 app.delete('/api/stories/:id', isAuthenticated, deleteStory);
+
+// Manage Comments
+app.get('/api/comments/story/:storyId', getStoryComments);
+app.get('/api/comments/:id', getComment);
+app.get('/api/comments/:userId', getCommentsByUser);
+app.post('/api/comments/:storyId', isAuthenticated, createComment);
+app.put('/api/comments/:id', isAuthenticated, editComment);
+app.put('/api/comments/remove/:id', isAuthenticated, removeComment);
 
 app.listen(SERVER_PORT, () => console.log(`Listening on ${SERVER_PORT}`));

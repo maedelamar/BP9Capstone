@@ -1,8 +1,11 @@
 const titleHeader = document.getElementById('story-view-title');
 const storySection = document.getElementById('story-content');
+const commentSection = document.getElementById('comment-section');
 
 const storyId = +location.href.charAt(location.href.length - 1);
 const userId = +sessionStorage.getItem('userId');
+
+let isPublic = false;
 
 function rateStory(e) {
     e.preventDefault();
@@ -26,6 +29,8 @@ axios.get(`/api/stories/${storyId}`)
         location.href = '/';
         return;
     }
+
+    isPublic = res.data.is_public;
 
     titleHeader.textContent = `${res.data.title} by ${res.data.username}`;
     storySection.innerHTML = '';
@@ -104,6 +109,137 @@ axios.get(`/api/stories/${storyId}`)
 
         rateForm.addEventListener('submit', rateStory);
     }
+
+    axios.get(`/api/comments/story/${storyId}`)
+        .then(res => {
+            console.log(isPublic);
+            if (isPublic) {
+                commentSection.innerHTML = `
+                    <form id="comment-form">
+                        <label for="comment-input">Write a Comment: </label>
+                        <textarea name="comment-input" id="comment-input" cols="30" rows="10"></textarea>
+                        <button type="submit">Submit</button>
+                    </form>
+                    <div id="comment-container"></div>
+                `;
+
+                const commentForm = document.getElementById('comment-form');
+
+                commentForm.addEventListener('submit', e => {
+                    e.preventDefault();
+
+                    const comment = document.getElementById('comment-input').value;
+                    const timePosted = new Date();
+
+                    const headers = {headers: {authorization: sessionStorage.getItem('token')}};
+
+                    axios.post(`/api/comments/${+storyId}`, {userId, comment, timePosted}, headers)
+                    .then(res => {
+                        alert("Comment posted!");
+                        location.href = `/story/${storyId}`;
+                    })
+                    .catch(err => {
+                        alert("Axios error. Check the console");
+                        console.log(err);
+                    });
+                });
+
+                const commentContainer = document.getElementById('comment-container');
+
+                if (res.data.length === 0) {
+                    commentContainer.innerHTML = '<p>This story has no comments</p>';
+                    return;
+                }
+
+                for (let comment of res.data) {
+                    const commentDiv = document.createElement('div');
+                    commentDiv.className = "comment";
+                    commentDiv.innerHTML = `<br><br>
+                                            <a href="/profile/${comment.user_id}" class="comment-user">${comment.username}</a>
+                                            <p id="comment-${comment.comment_id}" class="comment-text">${comment.comment}</p>`;
+                    
+                    if (comment.user_id === userId) {
+                        const editCommentBtn = document.createElement('button');
+                        editCommentBtn.textContent = 'Edit';
+                        editCommentBtn.addEventListener('click', () => {
+                            editCommentBtn.hidden = true;
+
+                            const editCommentBox = document.createElement('textarea');
+                            editCommentBox.rows = "10";
+                            editCommentBox.cols - "30";
+                            editCommentBox.value = comment.comment;
+
+                            const editConfirmBtn = document.createElement('button');
+                            editCommentBtn.type = 'submit';
+                            editConfirmBtn.textContent = "Submit";
+                            
+                            const editCommentForm = document.createElement('form');
+                            editCommentForm.id = 'edit-comment-form';
+                            editCommentForm.appendChild(editCommentBox);
+                            editCommentForm.appendChild(editConfirmBtn);
+
+                            editCommentForm.addEventListener('submit', e => {
+                                e.preventDefault();
+
+                                const commentBody = editCommentBox.value;
+
+                                const headers = {headers: {authorization: sessionStorage.getItem('token')}};
+
+                                axios.put(`/api/comments/${comment.comment_id}`, {commentBody}, headers)
+                                .then(res => {
+                                    const newComment = document.createElement('p');
+                                    newComment.id = `comment-${comment.comment_id}`;
+                                    newComment.className = 'comment-text';
+                                    newComment.textContent = comment.comment;
+                                    location.href = `/story/${storyId}`;
+                                })
+                                .catch(err => {
+                                    alert("Axios error. Check the console.");
+                                    console.log(err);
+                                });
+                            });
+
+                            console.log(editCommentForm);
+
+                            document.getElementById(`comment-${comment.comment_id}`).replaceWith(editCommentForm);
+                        });
+
+                        commentDiv.appendChild(editCommentBtn);
+
+                        const removeCommentBtn = document.createElement('button');
+                        removeCommentBtn.textContent = "Remove";
+
+                        removeCommentBtn.addEventListener('click', () => {
+                            const willRemove = confirm("Are you sure you want to remove this comment? It will still exist, but users will not see it.");
+
+                            if (willRemove) {
+                                const headers = {headers: {authorization: sessionStorage.getItem('token')}};
+
+                                axios.put(`/api/comments/remove/${comment.comment_id}`, {}, headers)
+                                .then(res => {
+                                    alert("Your comment has been removed.");
+                                    location.href = `/story/${storyId}`;
+                                })
+                                .catch(err => {
+                                    alert("Axios error. Check the console.");
+                                    console.log(err);
+                                });
+                            }
+                        });
+
+                        commentDiv.appendChild(removeCommentBtn);
+                    }
+
+                    commentContainer.appendChild(commentDiv);
+                }
+            } else {
+                commentSection.innerHTML = '<p>This story is private.</p>'
+            }
+        })
+        .catch(err => {
+            alert("Axios error. Check the console.");
+            console.log(err);
+        });
 })
 .catch(err => {
     alert("Axios error. Check the console.");

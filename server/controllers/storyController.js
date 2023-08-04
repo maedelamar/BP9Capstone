@@ -14,10 +14,13 @@ const sequelize = new Sequelize(CONNECTION_STRING, {
 module.exports = {
     getAllStories: (req, res) => {
         sequelize.query(`
-            select s.*, username from bkslf_Stories as s join bkslf_Users as u on s.author = u.user_id;
+            select s.*, username from bkslf_Stories as s join bkslf_Users as u on s.author = u.user_id order by title;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     getStory: (req, res) => {
@@ -28,7 +31,10 @@ module.exports = {
             on s.author = u.user_id where story_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0][0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     searchByTitle: (req, res) => {
@@ -39,16 +45,24 @@ module.exports = {
             on s.author = u.user_id where title like %${search}% and is_public = true;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     getHighestRated: (req, res) => {
         sequelize.query(`
             select s.*, username from bkslf_Stories as s join bkslf_Users as u
-            on s.author = u.user_id where is_public = true order by rating desc limit 10;
+            on s.author = u.user_id where is_public = true order by
+            case when rateCount = 0 then null else rating / rateCount end desc,
+            time_posted desc limit 10;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     getLatest: (req, res) => {
@@ -99,7 +113,10 @@ module.exports = {
             order by time_posted desc;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     createStory: (req, res) => {
@@ -124,7 +141,10 @@ module.exports = {
             update bkslf_Stories set title = '${title}', story = '${story}' where story_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(400).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     changeVisibility: (req, res) => {
@@ -135,7 +155,10 @@ module.exports = {
             update bkslf_Stories set is_public = ${isPublic} where story_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     updateRating: (req, res) => {
@@ -146,16 +169,24 @@ module.exports = {
             update bkslf_Stories set rating = rating + ${+rating}, rateCount = rateCount + 1 where story_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     deleteStory: (req, res) => {
         const {id} = req.params;
 
         sequelize.query(`
+            update bkslf_Comments set story_id = null where story_id = ${+id};
+
             delete from bkslf_Stories where story_id = ${+id};
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     }
 };

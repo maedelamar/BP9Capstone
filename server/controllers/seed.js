@@ -57,7 +57,8 @@ module.exports = {
                 comment_id serial primary key,
                 story_id int references bkslf_Stories(story_id),
                 comment varchar(255) not null,
-                time_posted timestamp not null
+                time_posted timestamp not null,
+                is_visible boolean not null
             );
 
             create table bkslf_UserComment (

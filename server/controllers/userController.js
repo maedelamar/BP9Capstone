@@ -33,7 +33,7 @@ const toCipher = character => String.fromCharCode((character.charCodeAt(0) - 12)
 module.exports = {
     getAllUsers: (req, res) => {
         sequelize.query(`
-            select * from bkslf_Users;
+            select * from bkslf_Users order by username;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => res.status(500).send(dbErr));
