@@ -52,6 +52,10 @@ axios.get(`/api/messages/direct/${otherUser}?receiver=${userId}`, headers)
         e.preventDefault();
 
         const message = document.getElementById('new-msg-input').value;
+        if (!message) {
+            alert("Your message must not be empty.");
+            return;
+        }
 
         const body = {
             sender: userId,
@@ -73,4 +77,6 @@ axios.get(`/api/messages/direct/${otherUser}?receiver=${userId}`, headers)
 .catch(err => {
     alert("Axios error. Check the console.");
     console.log(err);
-})
+});
+
+document.getElementById('direct-msg-back-btn').addEventListener('click', () => location.href = '/messages');

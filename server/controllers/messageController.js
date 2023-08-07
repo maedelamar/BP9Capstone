@@ -41,7 +41,7 @@ module.exports = {
         const {receiver} = req.params;
 
         sequelize.query(`
-            select sender, time_sent, username from bkslf_Messages as m join bkslf_Users as u
+            select sender, message, time_sent, username from bkslf_Messages as m join bkslf_Users as u
             on m.sender = u.user_id where receiver = ${+receiver}
             order by time_sent desc;
         `)

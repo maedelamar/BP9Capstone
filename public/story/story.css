@@ -1,3 +1,9 @@
+#story-back-btn {
+	float: left;
+    position: relative;
+    left: 20px;
+}
+
 #story-view-title {
 	margin: 15px;
 	font-size: 30pt;
@@ -15,7 +21,7 @@
 #story-btn-container {
 	display: flex;
 	justify-content: space-around;
-	width: 5%;
+	width: 7%;
 	margin: 10px;
 	position: relative;
 	right: 15px;
@@ -55,6 +61,11 @@
 
 #comment-section {
 	padding: 20px;
+}
+
+#comment-section > p {
+	position: relative;
+	left: 22px;
 }
 
 #comment-container {

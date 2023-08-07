@@ -1,0 +1,29 @@
+h2 {
+    text-align: center;
+    font-size: 34pt;
+    position: relative;
+    top: 40px;
+}
+
+#write-story-form {
+    display: flex;
+    flex-direction: column;
+    margin: 8%;
+}
+
+label {
+    margin: 10px;
+    position: relative;
+    left: 10px;
+}
+
+#title-input, #story-input, #write-btns {
+    margin: 20px;
+}
+
+#public-box {
+    margin: 0;
+    position: relative;
+    right: 38.5%;
+    bottom: 24px;
+}

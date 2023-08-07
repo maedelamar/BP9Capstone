@@ -1,0 +1,15 @@
+#send-message-form {
+    display: flex;
+    flex-direction: column;
+    margin: 8%;
+}
+
+label {
+    margin: 10px;
+    position: relative;
+    left: 10px;
+}
+
+#msg-receiver, #message-input, #msg-btns {
+    margin: 20px;
+}

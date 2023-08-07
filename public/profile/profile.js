@@ -9,6 +9,8 @@ if (userId === profileId) {
     mode = 'view';
 }
 
+const makeStoryBtn = document.querySelector('.make-story-btn');
+
 function destroySession() {
     sessionStorage.clear();
     location.href = '/';
@@ -28,6 +30,8 @@ axios.get(`/api/users/${profileId}`)
 });
 
 if (mode === 'view') {
+    makeStoryBtn.hidden = true;
+
     axios.get(`/api/author_stories_public/${profileId}`)
     .then(res => {
         const authorStories = document.getElementById('author-stories');
@@ -37,25 +41,44 @@ if (mode === 'view') {
             return;
         }
 
+        const storyTable = document.createElement('table');
+        storyTable.id = 'story-table';
+
+        const tableHeader = document.createElement('tr');
+        const tableHeaderText = document.createElement('th');
+        tableHeaderText.textContent = 'Stories';
+
+        tableHeader.appendChild(tableHeaderText);
+        storyTable.appendChild(tableHeader);
+
         for (let story of res.data) {
             const title = document.createElement('a');
             title.className = 'author-story-title';
             title.textContent = story.title;
             title.href = `/story/${story.story_id}`;
-            const p = document.createElement('p');
-            p.appendChild(title);
-            authorStories.appendChild(p);
+            const td = document.createElement('td');
+            td.appendChild(title);
+
+            const tr = document.createElement('tr');
+            tr.appendChild(td);
+
+            storyTable.appendChild(tr);
         }
+
+        authorStories.appendChild(storyTable);
     })
     .catch(err => {
         alert("Axios error. Check the console.");
         console.log(err);
     })
 } else if (mode === 'interact') {
+    makeStoryBtn.hidden = false;
+
     axios.get(`/api/author_stories/${profileId}`, {headers: {authorization: sessionStorage.getItem('token')}})
     .then(res => {
         const settingsBtn = document.createElement('button');
         settingsBtn.className = 'log-btn';
+        settingsBtn.id = 'settings-btn';
         settingsBtn.textContent = 'Settings';
         settingsBtn.addEventListener('click', openNav);
         document.querySelector('header').appendChild(settingsBtn);
@@ -79,15 +102,31 @@ if (mode === 'view') {
             return;
         }
 
+        const storyTable = document.createElement('table');
+        storyTable.id = 'story-table';
+
+        const tableHeader = document.createElement('tr');
+        const tableHeaderText = document.createElement('th');
+        tableHeaderText.textContent = 'Stories';
+
+        tableHeader.appendChild(tableHeaderText);
+        storyTable.appendChild(tableHeader);
+
         for (let story of res.data) {
             const title = document.createElement('a');
             title.className = 'author-story-title';
             title.textContent = story.title;
             title.href = `/story/${story.story_id}`;
-            const p = document.createElement('p');
-            p.appendChild(title);
-            authorStories.appendChild(p);
+            const td = document.createElement('td');
+            td.appendChild(title);
+
+            const tr = document.createElement('tr');
+            tr.appendChild(td);
+
+            storyTable.appendChild(tr);
         }
+
+        authorStories.appendChild(storyTable);
     })
     .catch(err => {
         alert('Axios error. Check the console.');
@@ -97,3 +136,7 @@ if (mode === 'view') {
     alert('Something has gone wrong. Check the console.');
     console.log(mode);
 }
+
+document.getElementById('profile-back-btn').addEventListener('click', () => location.href = '/');
+
+makeStoryBtn.addEventListener('click', () => location.href = '/write');

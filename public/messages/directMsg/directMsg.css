@@ -1,3 +1,9 @@
+#direct-msg-back-btn {
+    float: left;
+    position: relative;
+    left: 20px;
+}
+
 #other-person-name {
     text-align: center;
     font-size: 34pt;
@@ -29,4 +35,27 @@
     padding: 10px;
     margin: 40px;
     background-color: rgba(211, 211, 211, 0.7);
+}
+
+#new-msg-form {
+    margin: 10px;
+    position: absolute;
+    left: 25%;
+    width: 25%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#new-msg-input {
+    width: 300px;
+    height: 33px;
+}
+
+#send-msg-btn {
+    background-color: green;
+    color: white;
+    position: relative;
+    top: 2px;
+    width: 50px;
+    height: 33px;
 }

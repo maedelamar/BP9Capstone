@@ -53,6 +53,7 @@ header {
     background-color: green;
     color: white;
     height: 200px;
+	position: static;
 }
 
 #app-title {
@@ -60,4 +61,22 @@ header {
     font-size: 48pt;
     position: relative;
     top: 65px;
+}
+
+.log-btn {
+    width: 100px;
+    height: 60px;
+    background-color: black;
+    color: white;
+}
+
+.make-story-btn {
+    width: 60%;
+    height: 50px;
+    font-size: 14pt;
+    margin: 50px;
+    position: relative;
+    left: 17.7%;
+    background-color: green;
+    color: white;
 }

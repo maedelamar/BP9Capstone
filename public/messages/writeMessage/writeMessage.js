@@ -44,7 +44,7 @@ function handleSendMessage(e) {
         })
     })
     .catch(err => {
-        alert("Axios error. Check the console.");
+        alert("User not found.");
         console.log(err);
     });
 }

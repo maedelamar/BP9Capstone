@@ -1,0 +1,15 @@
+#delete-form {
+    display: flex;
+    flex-direction: column;
+    margin: 8%;
+}
+
+label {
+    margin: 10px;
+    position: relative;
+    left: 10px;
+}
+
+#delete-confirm-input, #delete-form-options {
+    margin: 20px;
+}

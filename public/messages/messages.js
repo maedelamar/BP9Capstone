@@ -13,10 +13,23 @@ axios.get(`/api/messages/senders/${userId}`, {headers: {authorization: sessionSt
         link.className = "dm-link";
         link.href = `/messages/direct/${sender.sender}`;
         link.textContent = sender.username;
-        mainSection.appendChild(link);
+
+        const shortMessage = document.createElement('p');
+        shortMessage.className = 'short-message';
+        shortMessage.textContent = sender.message.slice(0, 30);
+
+        const messengerContainer = document.createElement('div');
+        messengerContainer.className = 'messenger-container';
+
+        messengerContainer.appendChild(link);
+        messengerContainer.appendChild(shortMessage);
+
+        mainSection.appendChild(messengerContainer);
     }
 })
 .catch(err => {
     alert("Axios error. Check the console.");
     console.log(err);
 });
+
+document.getElementById('msg-back-btn').addEventListener('click', () => location.href = `/profile/${userId}`);

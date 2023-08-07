@@ -17,21 +17,21 @@
     </header>
     <main>
         <br>
-        <button onclick="sessionStorage.clear(); location.href = '/'">Log Out</button>
-        <br>
         <h2 id="welcome-msg">Loading...</h2>
         <br><br>
-        <button id="make-story-btn" hidden="true">Write a New Story</button>
+        <button class="make-story-btn" hidden="true">Write a New Story</button>
         <br><br><br><br>
-        <h3 class="highlight-title">Recent Stories</h3>
-        <section id="recent-stories">
-            <p>Loading Stories...</p>
-        </section>
+        <table id="recent-story-table">
+            <tr>
+                <th>Recent Stories</th>
+            </tr>
+        </table>
         <br><br><br><br>
-        <h3 class="highlight-title">Highest Rated</h3>
-        <section id="highest-rated">
-            <p>Loading Stories...</p>
-        </section>
+        <table id="highest-rated-table">
+            <tr>
+                <th>Highest Rated</th>
+            </tr>
+        </table>
     </main>
     <footer>
 

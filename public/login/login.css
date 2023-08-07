@@ -1,0 +1,22 @@
+h2 {
+    text-align: center;
+    font-size: 34pt;
+    position: relative;
+    top: 60px;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    margin: 8%;
+}
+
+label {
+    margin: 10px;
+    position: relative;
+    left: 10px;
+}
+
+#login-cred-input, #login-password-input, #login-btns {
+    margin: 20px;
+}

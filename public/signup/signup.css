@@ -1,0 +1,27 @@
+h2 {
+    text-align: center;
+    font-size: 34pt;
+    position: relative;
+    top: 60px;
+}
+
+#signup-form {
+    display: flex;
+    flex-direction: column;
+    margin: 8%;
+}
+
+label {
+    margin: 10px;
+    position: relative;
+    left: 10px;
+}
+
+#signup-username-input, #signup-email-input, #signup-birthday-input,
+#signup-pronoun-input, #signup-password-input, #signup-btns, #signup-password-confirm {
+    margin: 20px;
+}
+
+#signup-birthday-input {
+    width: 100px;
+}

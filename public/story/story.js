@@ -46,10 +46,12 @@ axios.get(`/api/stories/${storyId}`)
         console.log("User is the author.");
 
         const editLink = document.createElement('a');
+        editLink.id = 'edit-link'
         editLink.textContent = 'edit';
         editLink.href = `/edit/${storyId}`;
 
         const deleteBtn = document.createElement('button');
+        deleteBtn.id = 'delete-btn';
         deleteBtn.textContent = 'delete';
 
         deleteBtn.addEventListener('click', () => {
@@ -150,7 +152,7 @@ axios.get(`/api/stories/${storyId}`)
                 const commentContainer = document.getElementById('comment-container');
 
                 if (res.data.length === 0) {
-                    commentContainer.innerHTML = '<p>This story has no comments</p>';
+                    commentContainer.innerHTML = '<p>This story has no comments.</p>';
                     return;
                 }
 
@@ -248,3 +250,5 @@ axios.get(`/api/stories/${storyId}`)
     alert("Axios error. Check the console.");
     console.log(err);
 });
+
+document.getElementById('story-back-btn').addEventListener('click', () => location.href = '/');

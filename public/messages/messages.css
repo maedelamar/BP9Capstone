@@ -1,0 +1,28 @@
+#msg-back-btn {
+    float: left;
+    position: relative;
+    left: 20px;
+}
+
+#to-write-msg-btn {
+    width: 60%;
+    height: 50px;
+    font-size: 14pt;
+    margin: 30px;
+    position: relative;
+    left: 17.7%;
+    background-color: green;
+    color: white;
+}
+
+.messenger-container {
+    width: 40%;
+    height: 15%;
+    border: 3px solid green;
+    margin: auto;
+    padding: 20px;
+}
+
+.short-message {
+    font-size: 18pt;
+}

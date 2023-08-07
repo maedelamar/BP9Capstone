@@ -2,10 +2,10 @@ const logContainer = document.getElementById('log-btn-container');
 
 const welcomeMsg = document.getElementById('welcome-msg');
 
-const writeStoryBtn = document.getElementById('make-story-btn');
+const writeStoryBtn = document.querySelector('.make-story-btn');
 
-const recentSection = document.getElementById('recent-stories');
-const highestRatedSection = document.getElementById('highest-rated');
+const recentTable = document.getElementById('recent-story-table');
+const highestRatedTable = document.getElementById('highest-rated-table');
 
 
 
@@ -18,11 +18,11 @@ if (!token) {
     document.getElementById('login-btn').addEventListener('click', () => location.href = '/login');
     document.getElementById('signup-btn').addEventListener('click', () => location.href = '/signup');
     welcomeMsg.textContent = "Welcome, Guest";
-    document.getElementById('make-story-btn').hidden = true;
+    writeStoryBtn.hidden = true;
 } else {
     logContainer.innerHTML = `<button id="profile-btn" class="log-btn">Profile</button>`;
     document.getElementById('profile-btn').addEventListener('click', () => location.href = `/profile/${+userId}`);
-    document.getElementById('make-story-btn').hidden = false;
+    writeStoryBtn.hidden = false;
 
     axios.get(`/api/users/${userId}`)
     .then(res => {
@@ -37,13 +37,18 @@ if (!token) {
 axios.get('/api/latest_stories')
 .then(res => {
     if (res.data.length === 0) {
-        recentSection.innerHTML = '<p>No stories yet. You can change that!</p>';
+        const td = document.createElement('td');
+        td.textContent = 'No stories yet. You can change that!';
+
+        const tr = document.createElement('tr');
+        tr.appendChild(td);
+
+        recentTable.appendChild(tr);
+
         return;
     }
 
-    recentSection.innerHTML = '';
     res.data.forEach(element => {
-        recentSection.appendChild(document.createElement('br'));
         const title = document.createElement('a');
         title.className = "front-page-title";
         title.href = `/story/${element.story_id}`;
@@ -53,11 +58,15 @@ axios.get('/api/latest_stories')
         const author = document.createElement('a');
         author.href = `/profile/${element.author}`;
         author.textContent = element.username;
-        const p = document.createElement('p');
-        p.appendChild(title);
-        p.appendChild(by);
-        p.appendChild(author);
-        recentSection.appendChild(p);
+        const td = document.createElement('td');
+        td.appendChild(title);
+        td.appendChild(by);
+        td.appendChild(author);
+
+        const tr = document.createElement('tr');
+        tr.appendChild(td);
+
+        recentTable.appendChild(tr);
     });
 })
 .catch(err => console.log(err));
@@ -65,13 +74,18 @@ axios.get('/api/latest_stories')
 axios.get('/api/highest_rated_stories')
 .then(res => {
     if (res.data.length === 0) {
-        highestRatedSection.innerHTML = '<p>No stories yet. You can change that!</p>';
+        const td = document.createElement('td');
+        td.textContent = 'No stories yet. You can change that!';
+
+        const tr = document.createElement('tr');
+        tr.appendChild(td);
+
+        highestRatedTable.appendChild(tr);
+
         return;
     }
 
-    highestRatedSection.innerHTML = '';
     res.data.forEach(element => {
-        highestRatedSection.appendChild(document.createElement('br'));
         const title = document.createElement('a');
         title.className = "front-page-title"
         title.href = `/story/${element.story_id}`;
@@ -81,11 +95,15 @@ axios.get('/api/highest_rated_stories')
         const author = document.createElement('a');
         author.href = `/profile/${element.author}`;
         author.textContent = element.username;
-        const p = document.createElement('p');
-        p.appendChild(title);
-        p.appendChild(by);
-        p.appendChild(author);
-        highestRatedSection.appendChild(p);
+        const td = document.createElement('td');
+        td.appendChild(title);
+        td.appendChild(by);
+        td.appendChild(author);
+
+        const tr = document.createElement('tr');
+        tr.appendChild(td);
+
+        highestRatedTable.appendChild(tr);
     });
 })
 .catch(err => console.log(err));
