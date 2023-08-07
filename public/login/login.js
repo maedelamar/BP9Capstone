@@ -4,10 +4,10 @@ const loginCancelBtn = document.getElementById('login-cancel-btn');
 function handleLogin(e) {
     e.preventDefault();
 
-    const email = document.getElementById('login-email-input').value;
+    const logCred = document.getElementById('login-cred-input').value;
     const password = document.getElementById('login-password-input').value;
 
-    axios.post('/api/login', {email, password})
+    axios.post('/api/login', {logCred, password})
     .then(async res => {
         const token = await res.data.token;
         alert("Successfully logged in");

@@ -7,14 +7,16 @@ const path = require('path');
 
 const corsOptions = {exposedHeaders: 'Authorization'};
 
-const {seed} = require('./controllers/seed.js');
+const {seed, seed2} = require('./controllers/seed.js');
 const {isAuthenticated} = require('./controllers/isAuthenticated.js');
-const {getAllUsers, getUser, createUser, updateUser, changePassword,
+const {getAllUsers, getUser, getUserByName, createUser, updateUser, changePassword,
     changePermissions, deleteUser, login, checkPassword} = require('./controllers/userController.js');
 const {getAllStories, getStory, searchByTitle, getHighestRated, getLatest, getByAuthorPublic, getByAuthor,
     searchByAuthor, createStory, editStory, changeVisibility, updateRating, deleteStory} = require('./controllers/storyController.js');
 const {getStoryComments, getComment, getCommentsByUser, createComment,
     editComment, removeComment} = require('./controllers/commentController.js');
+const {getAllMessages, getMessage, getSenders, getMessagesBySender, createMessage,
+    editMessage, blockUser, unBlockUser, isNotBlocked} = require('./controllers/messageController.js');
 
 app.use(express.json());
 app.use(cors(corsOptions));
@@ -71,12 +73,29 @@ app.get('/delete_profile', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/profile/delete/profileDel.html'));
 });
 
+// Messages Page
+app.get('/messages', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/messages/messages.html'));
+});
+
+// Write Messages Page
+app.get('/messages/write', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/messages/writeMessage/writeMessage.html'));
+});
+
+// Direct Message Page
+app.get('/messages/direct/:otherUser', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/messages/directMsg/directMsg.html'));
+})
+
 // Seed
 app.post("/seed", seed);
+app.post('/seed2', seed2);
 
 // Manage Users
 app.get('/api/users', getAllUsers);
 app.get('/api/users/:id', getUser);
+app.get('/api/users/name/:name', getUserByName)
 app.post('/api/users', createUser);
 app.put('/api/users/:id', isAuthenticated, updateUser);
 app.put('/api/users/password/:id', isAuthenticated, changePassword);
@@ -107,5 +126,15 @@ app.get('/api/comments/:userId', getCommentsByUser);
 app.post('/api/comments/:storyId', isAuthenticated, createComment);
 app.put('/api/comments/:id', isAuthenticated, editComment);
 app.put('/api/comments/remove/:id', isAuthenticated, removeComment);
+
+// Manage Messages
+app.get('/api/messages', isAuthenticated, getAllMessages);
+app.get('/api/messages/:id', isAuthenticated, getMessage);
+app.get('/api/messages/senders/:receiver', isAuthenticated, getSenders);
+app.get('/api/messages/direct/:sender', isAuthenticated, getMessagesBySender);
+app.post('/api/messages', isAuthenticated, isNotBlocked, createMessage);
+app.put('/api/messages/:id', isAuthenticated, isNotBlocked, editMessage);
+app.post('/api/block', isAuthenticated, isNotBlocked, blockUser);
+app.put('/api/unblock', isAuthenticated, isNotBlocked, unBlockUser);
 
 app.listen(SERVER_PORT, () => console.log(`Listening on ${SERVER_PORT}`));

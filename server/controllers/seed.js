@@ -81,5 +81,38 @@ module.exports = {
             res.sendStatus(200);
         })
         .catch(dbErr => console.log('ERROR SEEDING DB', dbErr));
+    },
+
+    seed2: (req, res) => {
+        sequelize.query(`
+            drop table if exists bkslf_Messages;
+            drop table if exists bkslf_Collaborations;
+
+            create table bkslf_Messages (
+                message_id serial primary key,
+                sender int references bkslf_Users(user_id),
+                receiver int references bkslf_Users(user_id),
+                message text not null,
+                time_sent timestamp not null
+            );
+
+            create table bkslf_BlockedUsers (
+                blocked_id serial primary key,
+                user_blocking_id int references bkslf_Users(user_id),
+                blocked_user_id int references bkslf_Users(user_id),
+                in_use boolean not null
+            );
+
+            create table bkslf_Collaborations (
+                collaboration_id serial primary key,
+                user_id int references bkslf_Users(user_id),
+                story_id int references bkslf_Stories(story_id)
+            );
+        `)
+        .then(dbRes => {
+            console.log("New tables seeded!");
+            res.sendStatus(200);
+        })
+        .catch(dbErr => console.log("ERROR SEEDING DB", dbErr));
     }
 };

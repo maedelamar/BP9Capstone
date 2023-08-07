@@ -1,0 +1,32 @@
+#other-person-name {
+    text-align: center;
+    font-size: 34pt;
+    padding: 30px;
+}
+
+#messages {
+    width: 75%;
+    height: 80%;
+    margin: auto;
+    position: relative;
+    left: 10%;
+}
+
+.received-message {
+    width: 10%;
+    border-radius: 10%;
+    padding: 10px;
+    margin: 40px;
+    background-color: rgba(0, 128, 0, 0.7);
+    color: white;
+}
+
+.sent-message {
+    position: relative;
+    left: 60%;
+    width: 10%;
+    border-radius: 10%;
+    padding: 10px;
+    margin: 40px;
+    background-color: rgba(211, 211, 211, 0.7);
+}

@@ -56,6 +56,19 @@ module.exports = {
         });
     },
 
+    getUserByName: (req, res) => {
+        const {name} = req.params;
+
+        sequelize.query(`
+            select * from bkslf_Users where username = '${name}';
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0][0]))
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        })
+    },
+
     createUser: (req, res) => {
         const {username, email, password, birthday, pronouns} = req.body;
 
@@ -168,10 +181,17 @@ module.exports = {
     },
 
     login: (req, res) => {
-        const {email, password} = req.body;
+        const {logCred, password} = req.body;
         let userData;
 
-        if (email.includes("'") || email.includes(';') || email.includes('(') || email.includes(')') || email.includes('=')) {
+        let credType;
+        if (logCred.includes('.com') || logCred.includes('.net') || logCred.includes('.edu')) {
+            credType = "email";
+        } else {
+            credType = "username";
+        }
+
+        if (logCred.includes("'") || logCred.includes(';') || logCred.includes('(') || logCred.includes(')') || logCred.includes('=')) {
             return res.status(400).send("We know what you're trying to do.");
         }
 
@@ -179,7 +199,7 @@ module.exports = {
 
         sequelize.query(`
             select u.*, passHash from bkslf_Users as u join bkslf_Passwords as p
-            on u.user_id = p.user_id where email = '${email}';
+            on u.user_id = p.user_id where ${credType} = '${logCred}';
         `)
         .then(dbRes => {
             if (!dbRes[0][0]) {
@@ -191,11 +211,14 @@ module.exports = {
                 return res.status(400).send("Bad email or password");
             }
             delete dbRes[0][0].passhash;
-            const token = createToken(email, dbRes[0][0].user_id);
+            const token = createToken(logCred, dbRes[0][0].user_id);
             const userToSend = {...dbRes[0][0], token};
             res.status(200).send(userToSend);
         })
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     checkPassword: (req, res) => {

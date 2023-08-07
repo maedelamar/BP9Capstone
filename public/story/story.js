@@ -67,12 +67,16 @@ axios.get(`/api/stories/${storyId}`)
             }
         });
 
-        storySection.appendChild(editLink);
-        storySection.appendChild(deleteBtn);
+        storyBtnContainer = document.createElement('div');
+        storyBtnContainer.id = "story-btn-container";
+
+        storyBtnContainer.appendChild(editLink);
+        storyBtnContainer.appendChild(deleteBtn);
+
+        storySection.appendChild(storyBtnContainer);
     }
 
     const ratingText = document.getElementById('rating');
-    ratingText.id = "rating-text";
     if (res.data.rating === 0) {
         ratingText.textContent = "This story has not been rated.";
     } else {
@@ -112,7 +116,6 @@ axios.get(`/api/stories/${storyId}`)
 
     axios.get(`/api/comments/story/${storyId}`)
         .then(res => {
-            console.log(isPublic);
             if (isPublic) {
                 commentSection.innerHTML = `
                     <form id="comment-form">
@@ -133,7 +136,7 @@ axios.get(`/api/stories/${storyId}`)
 
                     const headers = {headers: {authorization: sessionStorage.getItem('token')}};
 
-                    axios.post(`/api/comments/${+storyId}`, {userId, comment, timePosted}, headers)
+                    axios.post(`/api/comments/${storyId}`, {userId, comment, timePosted}, headers)
                     .then(res => {
                         alert("Comment posted!");
                         location.href = `/story/${storyId}`;

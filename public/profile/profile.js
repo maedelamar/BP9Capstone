@@ -9,6 +9,11 @@ if (userId === profileId) {
     mode = 'view';
 }
 
+function destroySession() {
+    sessionStorage.clear();
+    location.href = '/';
+}
+
 const openNav = () => document.getElementById('nav').style.width = '33%';
 
 const closeNav = () => document.getElementById('nav').style.width = '0%';
@@ -55,12 +60,16 @@ if (mode === 'view') {
         settingsBtn.addEventListener('click', openNav);
         document.querySelector('header').appendChild(settingsBtn);
 
+        const messageLink = document.getElementById('messages-link');
         const profileUpdateLink = document.getElementById('profile-update-link');
         const passwordChangeLink = document.getElementById('password-change-link');
+        const logoutLink = document.getElementById('logout-link');
         const profileDeleteLink = document.getElementById('profile-delete-link');
 
+        messageLink.addEventListener('click', () => location.href = '/messages');
         profileUpdateLink.addEventListener('click', () => location.href = `/update_profile`);
         passwordChangeLink.addEventListener('click', () => location.href = `/change_password`);
+        logoutLink.addEventListener('click', destroySession);
         profileDeleteLink.addEventListener('click', () => location.href = `/delete_profile`);
 
         const authorStories = document.getElementById('author-stories');
