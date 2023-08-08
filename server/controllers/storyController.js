@@ -69,7 +69,7 @@ module.exports = {
             ) as a
             join bkslf_Users as u on a.author = u.user_id
             order by a.avg desc;
-        `) //This is incomplete
+        `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => {
             console.log(dbErr);

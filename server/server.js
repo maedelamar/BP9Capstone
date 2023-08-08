@@ -22,77 +22,61 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(express.static('public'));
 
-// Navigation
-// Home page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/home/home.html'));
 });
 
-// Sign up page
 app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/signup/signup.html'));
 });
 
-// Login page
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/login/login.html'));
 });
 
-// Write Story Page
 app.get('/write', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/write_story/writeStory.html'));
 });
 
-// View Story Page
 app.get('/story/:id', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/story/story.html'));
 });
 
-// Edit Story Page
 app.get('/edit/:id', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/edit/edit.html'));
 });
 
-// Profile Page
 app.get('/profile/:id', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/profile/profile.html'));
 });
 
-// Update Profile Page
 app.get('/update_profile', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/profile/update/profileUpdate.html'));
 });
 
-// Change Password Page
 app.get('/change_password', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/profile/password/profilePass.html'));
 });
 
-// Delete Profile Page
 app.get('/delete_profile', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/profile/delete/profileDel.html'));
 });
 
-// Messages Page
 app.get('/messages', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/messages/messages.html'));
 });
 
-// Write Messages Page
 app.get('/messages/write', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/messages/writeMessage/writeMessage.html'));
 });
 
-// Direct Message Page
 app.get('/messages/direct/:otherUser', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/messages/directMsg/directMsg.html'));
 })
 
-// Seed
 app.post("/seed", seed);
 app.post('/seed2', seed2);
 
-// Manage Users
 app.get('/api/users', getAllUsers);
 app.get('/api/users/:id', getUser);
 app.get('/api/users/name/:name', getUserByName)
@@ -104,7 +88,6 @@ app.delete('/api/users/:id', isAuthenticated, deleteUser);
 app.post('/api/login', login);
 app.post('/api/password', isAuthenticated, checkPassword);
 
-// Manage Stories
 app.get('/api/stories', getAllStories);
 app.get('/api/stories/:id', getStory);
 app.get('/api/search_stories', searchByTitle);
@@ -119,7 +102,6 @@ app.put('/api/stories/visibility/:id', isAuthenticated, changeVisibility);
 app.put('/api/stories/rating/:id', isAuthenticated, updateRating);
 app.delete('/api/stories/:id', isAuthenticated, deleteStory);
 
-// Manage Comments
 app.get('/api/comments/story/:storyId', getStoryComments);
 app.get('/api/comments/:id', getComment);
 app.get('/api/comments/:userId', getCommentsByUser);
@@ -127,7 +109,6 @@ app.post('/api/comments/:storyId', isAuthenticated, createComment);
 app.put('/api/comments/:id', isAuthenticated, editComment);
 app.put('/api/comments/remove/:id', isAuthenticated, removeComment);
 
-// Manage Messages
 app.get('/api/messages', isAuthenticated, getAllMessages);
 app.get('/api/messages/:id', isAuthenticated, getMessage);
 app.get('/api/messages/senders/:receiver', isAuthenticated, getSenders);
