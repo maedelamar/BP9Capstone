@@ -48,9 +48,7 @@ module.exports = {
                 title varchar(255) not null,
                 story text not null,
                 time_posted timestamp not null,
-                is_public boolean not null,
-                rating int not null,
-                rateCount int not null
+                is_public boolean not null
             );
 
             create table bkslf_Comments (
@@ -86,6 +84,8 @@ module.exports = {
     seed2: (req, res) => {
         sequelize.query(`
             drop table if exists bkslf_Messages;
+            drop table if exists bkslf_BlockedUsers;
+            drop table if exists bkslf_Ratings;
             drop table if exists bkslf_Collaborations;
 
             create table bkslf_Messages (
@@ -103,10 +103,11 @@ module.exports = {
                 in_use boolean not null
             );
 
-            create table bkslf_Collaborations (
-                collaboration_id serial primary key,
+            create table bkslf_Ratings (
+                user_rating_id serial primary key,
                 user_id int references bkslf_Users(user_id),
-                story_id int references bkslf_Stories(story_id)
+                story_id int references bkslf_Stories(story_id),
+                rating int not null
             );
         `)
         .then(dbRes => {

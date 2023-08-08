@@ -12,9 +12,8 @@ function rateStory(e) {
 
     const rating = document.getElementById('rating-select').value;
 
-    axios.put(`/api/stories/rating/${storyId}`, {rating}, {headers: {authorization: sessionStorage.getItem('token')}})
+    axios.put(`/api/stories/rating/${storyId}`, {userId, rating}, {headers: {authorization: sessionStorage.getItem('token')}})
     .then(res => {
-        alert("The story has been rated.");
         location.href = `/story/${storyId}`;
     })
     .catch(err => {
@@ -30,19 +29,21 @@ axios.get(`/api/stories/${storyId}`)
         return;
     }
 
-    isPublic = res.data.is_public;
+    console.log(res.data[0].rating);
 
-    titleHeader.textContent = `${res.data.title} by ${res.data.username}`;
+    isPublic = res.data[0].is_public;
+
+    titleHeader.textContent = `${res.data[0].title} by ${res.data[0].username}`;
     storySection.innerHTML = '';
 
-    const story = res.data.story.split('\n');
+    const story = res.data[0].story.split('\n');
     for (let paragraph of story) {
         const p = document.createElement('p');
         p.textContent = paragraph;
         storySection.appendChild(p);
     }
 
-    if (res.data.author === userId) {
+    if (res.data[0].author === userId) {
         console.log("User is the author.");
 
         const editLink = document.createElement('a');
@@ -79,14 +80,14 @@ axios.get(`/api/stories/${storyId}`)
     }
 
     const ratingText = document.getElementById('rating');
-    if (res.data.rating === 0) {
+    if (!res.data[0].rating) {
         ratingText.textContent = "This story has not been rated.";
     } else {
-        const finalRating = (res.data.rating / res.data.ratecount).toFixed(1);
+        const finalRating = (res.data[0].rating / res.data[1].count).toFixed(1);
         ratingText.textContent = `Rating: ${finalRating}/5`;
     }
 
-    if (userId && userId !== res.data.author) {
+    if (userId && userId !== res.data[0].author) {
         const rateForm = document.createElement('form');
         rateForm.id = 'rate-form';
 
@@ -111,7 +112,7 @@ axios.get(`/api/stories/${storyId}`)
         rateForm.appendChild(dropDown);
         rateForm.appendChild(rateSubmit);
 
-        document.querySelector('main').appendChild(rateForm);
+        document.getElementById('rating-container').appendChild(rateForm);
 
         rateForm.addEventListener('submit', rateStory);
     }

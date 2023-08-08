@@ -75,7 +75,7 @@ axios.get('/api/highest_rated_stories')
 .then(res => {
     if (res.data.length === 0) {
         const td = document.createElement('td');
-        td.textContent = 'No stories yet. You can change that!';
+        td.textContent = 'No stories have been rated yet.';
 
         const tr = document.createElement('tr');
         tr.appendChild(td);

@@ -19,7 +19,8 @@
 }
 
 .received-message {
-    width: 10%;
+    width: fit-content;
+    block-size: fit-content;
     border-radius: 10%;
     padding: 10px;
     margin: 40px;
@@ -28,12 +29,14 @@
 }
 
 .sent-message {
-    position: relative;
-    left: 60%;
-    width: 10%;
+    width: fit-content;
+    block-size: fit-content;
     border-radius: 10%;
     padding: 10px;
-    margin: 40px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: auto;
+    margin-right: 40px;
     background-color: rgba(211, 211, 211, 0.7);
 }
 

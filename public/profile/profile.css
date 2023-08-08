@@ -17,6 +17,16 @@
 	margin: 35px;
 }
 
+#pronoun-title {
+	color: rgba(121, 121, 121, 0.8);
+	font-size: 24pt;
+}
+
+#no-stories {
+	text-align: center;
+	font-size: 16pt;
+}
+
 #story-table {
 	margin: auto;
 	width: 30%;

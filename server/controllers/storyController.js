@@ -27,10 +27,19 @@ module.exports = {
         const {id} = req.params;
 
         sequelize.query(`
-            select s.*, username from bkslf_Stories as s join bkslf_Users as u
-            on s.author = u.user_id where story_id = ${+id};
+            select s.*, rating, username from bkslf_Stories as s
+            join bkslf_Ratings as r on s.story_id = r.story_id
+            join bkslf_Users as u on r.user_id = u.user_id
+            where s.story_id = ${+id};
+
+            select s.*, username from bkslf_Stories as s
+            join bkslf_Users as u on s.author = u.user_id
+            left join bkslf_Ratings as r on s.story_id = r.story_id
+            where s.story_id = ${+id} and r.story_id is null;
+
+            select count(*) from bkslf_Ratings where story_id = ${+id};
         `)
-        .then(dbRes => res.status(200).send(dbRes[0][0]))
+        .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => {
             console.log(dbErr);
             res.status(500).send(dbErr);
@@ -53,11 +62,14 @@ module.exports = {
 
     getHighestRated: (req, res) => {
         sequelize.query(`
-            select s.*, username from bkslf_Stories as s join bkslf_Users as u
-            on s.author = u.user_id where is_public = true order by
-            case when rateCount = 0 then null else rating / rateCount end desc,
-            time_posted desc limit 10;
-        `)
+            select a.*, username from (
+                select s.*, avg(rating) from bkslf_Stories as s
+                join bkslf_Ratings as r on s.story_id = r.story_id
+                group by s.story_id
+            ) as a
+            join bkslf_Users as u on a.author = u.user_id
+            order by a.avg desc;
+        `) //This is incomplete
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => {
             console.log(dbErr);
@@ -123,8 +135,8 @@ module.exports = {
         const {author, title, story, timePosted, isPublic} = req.body;
 
         sequelize.query(`
-            insert into bkslf_Stories (author, title, story, time_posted, is_public, rating, rateCount)
-            values (${+author}, '${title}', '${story}', '${timePosted}', ${isPublic}, 0, 0);
+            insert into bkslf_Stories (author, title, story, time_posted, is_public)
+            values (${+author}, '${title}', '${story}', '${timePosted}', ${isPublic});
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => {
@@ -163,10 +175,15 @@ module.exports = {
 
     updateRating: (req, res) => {
         const {id} = req.params;
-        const {rating} = req.body;
+        const {userId, rating} = req.body;
 
         sequelize.query(`
-            update bkslf_Stories set rating = rating + ${+rating}, rateCount = rateCount + 1 where story_id = ${+id};
+            update bkslf_Ratings set rating = ${+rating} where user_id = ${+userId} and story_id = ${+id};
+
+            insert into bkslf_Ratings (user_id, story_id, rating) select ${+userId}, ${+id}, ${+rating}
+            where not exists(
+                select * from bkslf_Ratings where user_id = ${+userId} and story_id = ${+id}
+            );
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => {

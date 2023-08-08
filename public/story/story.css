@@ -27,6 +27,10 @@
 	right: 15px;
 }
 
+#rating-container {
+	margin: 35px;
+}
+
 #rating {
 	margin: 15px;
 	position: relative;

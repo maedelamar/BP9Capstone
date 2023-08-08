@@ -23,6 +23,9 @@ const closeNav = () => document.getElementById('nav').style.width = '0%';
 axios.get(`/api/users/${profileId}`)
 .then(res => {
     document.getElementById('author-name').textContent = res.data.username;
+    if (res.data.pronouns) {
+        document.getElementById('author-name').innerHTML += `<p id="pronoun-title">(${res.data.pronouns})</p>`
+    }
 })
 .catch(err => {
     alert("Axios error. Check the console.");
@@ -37,7 +40,7 @@ if (mode === 'view') {
         const authorStories = document.getElementById('author-stories');
 
         if (res.data.length === 0) {
-            authorStories.innerHTML = '<p>This author has no public stories.</p>';
+            authorStories.innerHTML = '<p id="no-stories">This author has no public stories.</p>';
             return;
         }
 
@@ -98,7 +101,7 @@ if (mode === 'view') {
         const authorStories = document.getElementById('author-stories');
 
         if (res.data.length === 0) {
-            authorStories.innerHTML = '<p>You have not written any stories.</p>';
+            authorStories.innerHTML = '<p id="no-stories">You have not written any stories.</p>';
             return;
         }
 

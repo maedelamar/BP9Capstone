@@ -51,11 +51,21 @@ axios.get(`/api/messages/direct/${otherUser}?receiver=${userId}`, headers)
     newMsgForm.addEventListener('submit', e => {
         e.preventDefault();
 
-        const message = document.getElementById('new-msg-input').value;
+        let message = document.getElementById('new-msg-input').value;
         if (!message) {
             alert("Your message must not be empty.");
             return;
         }
+
+        const messageArr = message.split('');
+        
+        for (let i = 0; i < message.length; i++) {
+            if (message.charAt(i) === "'") {
+                messageArr.splice(i, 0, "'");
+            }
+        }
+
+        message = messageArr.join('');
 
         const body = {
             sender: userId,

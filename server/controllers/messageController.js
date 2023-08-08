@@ -103,7 +103,7 @@ module.exports = {
             (select * from bkslf_BlockedUsers where user_blocking_id = ${+blockingId} and blocked_user_id = ${+blockedId})
             then (update bkslf_BlockedUsers set in_use = true where user_blocking_id = ${+blockingId} and blocked_user_id = ${+blockedId})
             else (insert into bkslf_BlockedUsers (user_blocking_id, blocked_user_id, in_use)
-            values (${+blockingId}, ${+blockedId}, true))
+            values (${+blockingId}, ${+blockedId}, true)) end
             from bkslf_BlockedUsers;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))

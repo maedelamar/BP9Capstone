@@ -8,13 +8,17 @@ h2 {
 #edit-story-form {
     display: flex;
     flex-direction: column;
-    margin: 8%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4%;
+    width: 40%;
 }
 
 label {
     margin: 10px;
     position: relative;
     left: 10px;
+    font-size: 14pt;
 }
 
 #edit-title-input, #edit-story-input, #edit-btns {
