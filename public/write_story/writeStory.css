@@ -21,13 +21,13 @@ label {
     font-size: 14pt;
 }
 
-#title-input, #story-input, #write-btns {
-    margin: 20px;
+form > p {
+    margin: 10px;
+    position: relative;
+    left: 10px;
+    font-size: 14pt;
 }
 
-#public-box {
-    margin: 0;
-    position: relative;
-    right: 23%;
-    bottom: 25px;
+#title-input, #story-input, #write-btns {
+    margin: 20px;
 }
