@@ -14,7 +14,7 @@ let userId = sessionStorage.getItem('userId');
 
 writeStoryBtn.hidden = true;
 
-if (!token) {
+if (!userId) {
     logContainer.innerHTML = `<button id="login-btn" class="log-btn">Log In</button>
     <button id="signup-btn" class="log-btn">Sign Up</button>`;
     document.getElementById('login-btn').addEventListener('click', () => location.href = '/login');
