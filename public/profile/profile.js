@@ -20,7 +20,7 @@ const openNav = () => document.getElementById('nav').style.width = '33%';
 
 const closeNav = () => document.getElementById('nav').style.width = '0%';
 
-makeStoryBtn.hidden = true;
+makeStoryBtn.style.visibility = 'hidden';
 
 axios.get(`/api/users/${profileId}`)
 .then(res => {
@@ -77,8 +77,8 @@ if (mode === 'view') {
 } else if (mode === 'interact') {
     axios.get(`/api/author_stories/${profileId}`, {headers: {authorization: sessionStorage.getItem('token')}})
     .then(res => {
-        if (res.data.author === userId) {
-            makeStoryBtn.hidden = false;
+        if (res.data[0].author === userId) {
+            makeStoryBtn.style.visibility = 'visible';
         }
 
         const settingsBtn = document.createElement('button');

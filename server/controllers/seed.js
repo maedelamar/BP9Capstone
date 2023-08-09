@@ -63,7 +63,7 @@ module.exports = {
             create table bkslf_UserComment (
                 user_comment_id serial primary key,
                 user_id int references bkslf_Users(user_id),
-                comment_id int references bkslf_Stories(story_id)
+                comment_id int references bkslf_Comments(comment_id)
             );
 
             insert into bkslf_Users (username, email) values ('prehistoric_dolphin', 'prehistoricdolphin789@gmail.com');
