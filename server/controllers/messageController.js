@@ -43,7 +43,7 @@ module.exports = {
         sequelize.query(`
             select sender, message, time_sent, username from bkslf_Messages as m join bkslf_Users as u
             on m.sender = u.user_id where receiver = ${+receiver}
-            order by time_sent desc;
+            order by time_sent desc limit 1;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => {
