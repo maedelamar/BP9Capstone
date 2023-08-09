@@ -16,7 +16,15 @@ axios.get(`/api/messages/senders/${userId}`, {headers: {authorization: sessionSt
 
         const shortMessage = document.createElement('p');
         shortMessage.className = 'short-message';
-        shortMessage.textContent = sender.message.slice(0, 30) + '...';
+        if (sender.message.length > 30) {
+            let i = 30;
+            while (sender.message.charAt(i) !== ' ') {
+                i++;
+            }
+            shortMessage.textContent = sender.message.slice(0, i) + '...';
+        } else {
+            shortMessage.textContent = sender.message;
+        }
 
         const messengerContainer = document.createElement('div');
         messengerContainer.className = 'messenger-container';
