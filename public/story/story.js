@@ -4,8 +4,10 @@ const commentSection = document.getElementById('comment-section');
 
 const storyId = +location.href.charAt(location.href.length - 1);
 const userId = +sessionStorage.getItem('userId');
+const permission = +sessionStorage.getItem('permission');
 
 let isPublic = false;
+console.log(permission);
 
 function rateStory(e) {
     e.preventDefault();
@@ -29,8 +31,6 @@ axios.get(`/api/stories/${storyId}`)
         return;
     }
 
-    console.log(res.data[0].rating);
-
     isPublic = res.data[0].is_public;
 
     titleHeader.textContent = `${res.data[0].title} by ${res.data[0].username}`;
@@ -44,8 +44,6 @@ axios.get(`/api/stories/${storyId}`)
     }
 
     if (res.data[0].author === userId) {
-        console.log("User is the author.");
-
         const editLink = document.createElement('a');
         editLink.id = 'edit-link'
         editLink.textContent = 'edit';
@@ -74,6 +72,32 @@ axios.get(`/api/stories/${storyId}`)
         storyBtnContainer.id = "story-btn-container";
 
         storyBtnContainer.appendChild(editLink);
+        storyBtnContainer.appendChild(deleteBtn);
+
+        storySection.appendChild(storyBtnContainer);
+    } else if (permission > 0) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.id = 'delete-btn';
+        deleteBtn.textContent = 'delete';
+
+        deleteBtn.addEventListener('click', () => {
+            const willDelete = confirm("Are you sure you want to delete this story? This cannot be undone.");
+            if (willDelete) {
+                axios.delete(`/api/stories/${storyId}`, {headers: {authorization: sessionStorage.getItem('token')}})
+                .then(res => {
+                    alert("Story deleted.");
+                    location.href = '/';
+                })
+                .catch(err => {
+                    alert("Axios error. Check the console.");
+                    console.log(err);
+                });
+            }
+        });
+
+        storyBtnContainer = document.createElement('div');
+        storyBtnContainer.id = "story-btn-container";
+
         storyBtnContainer.appendChild(deleteBtn);
 
         storySection.appendChild(storyBtnContainer);
@@ -212,6 +236,29 @@ axios.get(`/api/stories/${storyId}`)
 
                         commentDiv.appendChild(editCommentBtn);
 
+                        const removeCommentBtn = document.createElement('button');
+                        removeCommentBtn.textContent = "Remove";
+
+                        removeCommentBtn.addEventListener('click', () => {
+                            const willRemove = confirm("Are you sure you want to remove this comment? It will still exist, but users will not see it.");
+
+                            if (willRemove) {
+                                const headers = {headers: {authorization: sessionStorage.getItem('token')}};
+
+                                axios.put(`/api/comments/remove/${comment.comment_id}`, {}, headers)
+                                .then(res => {
+                                    alert("Your comment has been removed.");
+                                    location.href = `/story/${storyId}`;
+                                })
+                                .catch(err => {
+                                    alert("Axios error. Check the console.");
+                                    console.log(err);
+                                });
+                            }
+                        });
+
+                        commentDiv.appendChild(removeCommentBtn);
+                    } else if (permission > 0) {
                         const removeCommentBtn = document.createElement('button');
                         removeCommentBtn.textContent = "Remove";
 

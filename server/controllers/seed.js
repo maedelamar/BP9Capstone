@@ -39,6 +39,7 @@ module.exports = {
                 birthday timestamp not null,
                 pronouns varchar(10),
                 permission int not null,
+                can_post boolean not null,
                 can_comment boolean not null 
             );
 
@@ -70,9 +71,9 @@ module.exports = {
             insert into bkslf_Passwords (user_id, passHash)
             values ((select user_id from bkslf_Users where email = 'prehistoricdolphin789@gmail.com'), '$2a$15$8O5pskigIapi/Kp29dH1EuRtkbJokX4VUsaMwUUTrZzTKM9s.hcgy');
 
-            insert into bkslf_UserDetails (user_id, birthday, pronouns, permission, can_comment)
+            insert into bkslf_UserDetails (user_id, birthday, pronouns, permission, can_post, can_comment)
             values ((select user_id from bkslf_Users where email = 'prehistoricdolphin789@gmail.com'),'2000-10-08', 'she/her',
-            3, true);
+            3, true, true);
         `)
         .then(dbRes => {
             console.log("DB seeded!");

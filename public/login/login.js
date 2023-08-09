@@ -10,9 +10,10 @@ function handleLogin(e) {
     axios.post('/api/login', {logCred, password})
     .then(async res => {
         const token = await res.data.token;
-        alert("Successfully logged in");
         sessionStorage.setItem("token", token);
         sessionStorage.setItem("userId", res.data.user_id);
+        sessionStorage.setItem("permission", res.data.permission);
+        alert("Successfully logged in");
         location.href = '/';
     })
     .catch(err => {

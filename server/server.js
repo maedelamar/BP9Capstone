@@ -10,7 +10,7 @@ const corsOptions = {exposedHeaders: 'Authorization'};
 const {seed, seed2} = require('./controllers/seed.js');
 const {isAuthenticated} = require('./controllers/isAuthenticated.js');
 const {getAllUsers, getUser, getUserByName, createUser, updateUser, changePassword,
-    changePermissions, deleteUser, login, checkPassword} = require('./controllers/userController.js');
+    changePermissions, changePrivilages, deleteUser, login, checkPassword} = require('./controllers/userController.js');
 const {getAllStories, getStory, searchByTitle, getHighestRated, getLatest, getByAuthorPublic, getByAuthor,
     searchByAuthor, createStory, editStory, changeVisibility, updateRating, deleteStory} = require('./controllers/storyController.js');
 const {getStoryComments, getComment, getCommentsByUser, createComment,
@@ -84,6 +84,7 @@ app.post('/api/users', createUser);
 app.put('/api/users/:id', isAuthenticated, updateUser);
 app.put('/api/users/password/:id', isAuthenticated, changePassword);
 app.put('/api/users/permissions/:id', isAuthenticated, changePermissions);
+app.put('/api/users/privilages/:id', isAuthenticated, changePrivilages);
 app.delete('/api/users/:id', isAuthenticated, deleteUser);
 app.post('/api/login', login);
 app.post('/api/password', isAuthenticated, checkPassword);

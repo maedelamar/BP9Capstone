@@ -100,9 +100,9 @@ module.exports = {
                     insert into bkslf_Passwords (user_id, passHash)
                     values ((select user_id from bkslf_Users where email = '${email}'), '${passHash}');
 
-                    insert into bkslf_UserDetails (user_id, birthday, pronouns, permission, can_comment)
+                    insert into bkslf_UserDetails (user_id, birthday, pronouns, permission, can_post, can_comment)
                     values ((select user_id from bkslf_Users where email = '${email}'), '${birthday}',
-                    '${pronouns}', 0, true);
+                    '${pronouns}', 0, true, true);
 
                     select * from bkslf_Users where email = '${email}';
                 `)
@@ -111,11 +111,20 @@ module.exports = {
                     const userToSend = {...dbRes2[0][0], token};
                     res.status(200).send(userToSend);
                 })
-                .catch(dbErr2 => res.status(500).send(dbErr2));
+                .catch(dbErr2 => {
+                    console.log(dbErr2);
+                    res.status(500).send(dbErr2);
+                });
             })
-            .catch(dbErr1 => res.status(500).send(dbErr1));
+            .catch(dbErr1 => {
+                console.log(dbErr1);
+                res.status(500).send(dbErr1);
+            });
         })
-        .catch(dbErr => res.status(500).send(dbErr));
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
     },
 
     updateUser: (req, res) => {
@@ -161,6 +170,20 @@ module.exports = {
         .catch(dbErr => res.status(500).send(dbErr));
     },
 
+    changePrivilages: (req, res) => {
+        const {id} = req.params;
+        const {canPost, canComment} = req.body;
+
+        sequelize.query(`
+            update bkslf_Users set can_post = ${canPost}, can_comment = ${canComment} where user_id = ${+id};
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(dbErr => {
+            console.log(dbErr);
+            res.status(500).send(dbErr);
+        });
+    },
+
     deleteUser: (req, res) => {
         const {id} = req.params;
 
@@ -198,8 +221,10 @@ module.exports = {
         const cipher = password.split('').map(character => toCipher(character)).join('');
 
         sequelize.query(`
-            select u.*, passHash from bkslf_Users as u join bkslf_Passwords as p
-            on u.user_id = p.user_id where ${credType} = '${logCred}';
+            select u.*, permission, passHash from bkslf_Users as u
+            join bkslf_UserDetails as d on u.user_id = d.user_id
+            join bkslf_Passwords as p on u.user_id = p.user_id
+            where ${credType} = '${logCred}';
         `)
         .then(dbRes => {
             if (!dbRes[0][0]) {
