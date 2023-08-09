@@ -1,7 +1,7 @@
-# Bookshelf
+# The Writers' Collaborative
 
 ## Description
-Bookshelf is an online social site in which users can share stories, rate and comment on each other's stories, and send messages to each other.
+The Writers' Collaborative is an online social site in which users can share stories, rate and comment on each other's stories, and send messages to each other.
 
 ## Tech Stack
 ### Front End
@@ -33,7 +33,7 @@ Bookshelf is an online social site in which users can share stories, rate and co
 * Users can log out
 * Users can send and receive messages
 
-## How to Use Bookshelf
+## How to Use The Writers' Collaborative
 Navigate to http://18.189.185.52.
 ### Creating an Account
 1. On the home page, click the "Sign Up" button.
@@ -42,10 +42,10 @@ Navigate to http://18.189.185.52.
 1. On the home page, click the "Log In" button.
 2. Enter your username/email and your password and click "Submit".
 ### Creating a Story
-1. Sign up for or log into Bookshelf.
+1. Sign up for or log into The Writers' Collaborative.
 2. Click the "Write a Story" button on the home page.
 ##### Alternative
-1. Sign up for or log into Bookshelf.
+1. Sign up for or log into The Writers' Collaborative.
 2. Click the "Profile" button.
 3. Click the "Write a Story" button on the profile page.
 ### Reading a Public Story

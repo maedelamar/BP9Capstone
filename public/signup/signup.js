@@ -25,7 +25,7 @@ function handleSignup(e) {
     axios.post('/api/users', {username, email, password, birthday, pronouns})
     .then(async res => {
         const token = await res.data.token;
-        alert("Welcome to Bookshelf");
+        alert("Welcome to The Writers' Collaborative");
         sessionStorage.setItem("token", token);
         sessionStorage.setItem("userId", res.data.user_id);
         location.href = '/';
