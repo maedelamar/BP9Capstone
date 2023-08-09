@@ -39,9 +39,7 @@
 }
 
 #new-msg-form {
-    margin: 10px;
-    position: absolute;
-    left: 25%;
+    margin: 10px auto;
     width: 25%;
     display: flex;
     justify-content: space-around;
