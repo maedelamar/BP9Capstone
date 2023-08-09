@@ -20,6 +20,8 @@ const openNav = () => document.getElementById('nav').style.width = '33%';
 
 const closeNav = () => document.getElementById('nav').style.width = '0%';
 
+makeStoryBtn.hidden = true;
+
 axios.get(`/api/users/${profileId}`)
 .then(res => {
     document.getElementById('author-name').textContent = res.data.username;
@@ -33,8 +35,6 @@ axios.get(`/api/users/${profileId}`)
 });
 
 if (mode === 'view') {
-    makeStoryBtn.hidden = true;
-
     axios.get(`/api/author_stories_public/${profileId}`)
     .then(res => {
         const authorStories = document.getElementById('author-stories');
@@ -75,10 +75,12 @@ if (mode === 'view') {
         console.log(err);
     })
 } else if (mode === 'interact') {
-    makeStoryBtn.hidden = false;
-
     axios.get(`/api/author_stories/${profileId}`, {headers: {authorization: sessionStorage.getItem('token')}})
     .then(res => {
+        if (res.data.author === userId) {
+            makeStoryBtn.hidden = false;
+        }
+
         const settingsBtn = document.createElement('button');
         settingsBtn.className = 'log-btn';
         settingsBtn.id = 'settings-btn';

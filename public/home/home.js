@@ -12,13 +12,14 @@ const highestRatedTable = document.getElementById('highest-rated-table');
 let token = sessionStorage.getItem('token');
 let userId = sessionStorage.getItem('userId');
 
+writeStoryBtn.hidden = true;
+
 if (!token) {
     logContainer.innerHTML = `<button id="login-btn" class="log-btn">Log In</button>
     <button id="signup-btn" class="log-btn">Sign Up</button>`;
     document.getElementById('login-btn').addEventListener('click', () => location.href = '/login');
     document.getElementById('signup-btn').addEventListener('click', () => location.href = '/signup');
     welcomeMsg.textContent = "Welcome, Guest";
-    writeStoryBtn.hidden = true;
 } else {
     logContainer.innerHTML = `<button id="profile-btn" class="log-btn">Profile</button>`;
     document.getElementById('profile-btn').addEventListener('click', () => location.href = `/profile/${+userId}`);
