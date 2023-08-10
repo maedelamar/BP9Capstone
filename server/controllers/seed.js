@@ -116,5 +116,20 @@ module.exports = {
             res.sendStatus(200);
         })
         .catch(dbErr => console.log("ERROR SEEDING DB", dbErr));
+    },
+
+    insertColumnToTable: (req, res) => {
+        const {tableName, newColumn, defaultValue} = req.body
+
+        sequelize.query(`
+            alter table ${tableName} add column ${newColumn};
+
+            update ${tableName} set ${newColumn} = ${defaultValue};
+        `)
+        .then(dbRes => {
+            console.log("New column added!");
+            res.sendStatus(200);
+        })
+        .catch(dbErr => console.log("Error adding column", dbErr));
     }
 };

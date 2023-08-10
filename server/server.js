@@ -7,7 +7,7 @@ const path = require('path');
 
 const corsOptions = {exposedHeaders: 'Authorization'};
 
-const {seed, seed2} = require('./controllers/seed.js');
+const {seed, seed2, insertColumnToTable} = require('./controllers/seed.js');
 const {isAuthenticated} = require('./controllers/isAuthenticated.js');
 const {getAllUsers, getUser, getUserByName, createUser, updateUser, changePassword,
     changePermissions, changePrivilages, deleteUser, login, checkPassword} = require('./controllers/userController.js');
@@ -76,6 +76,7 @@ app.get('/messages/direct/:otherUser', (req, res) => {
 
 app.post("/seed", seed);
 app.post('/seed2', seed2);
+app.post('/new_column', insertColumnToTable);
 
 app.get('/api/users', getAllUsers);
 app.get('/api/users/:id', getUser);
