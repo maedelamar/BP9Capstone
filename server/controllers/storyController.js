@@ -50,8 +50,8 @@ module.exports = {
         const {search} = req.query;
 
         sequelize.query(`
-            select s.*, username from bkslf_Stories as s join bkslf_Users as u
-            on s.author = u.user_id where title like %${search}% and is_public = true;
+            select s.*, username from bkslf_Stories as s join bkslf_Users as u on s.author = u.user_id
+            where LOWER(title) like LOWER('%${search}%') and is_public = true;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => {
@@ -117,12 +117,11 @@ module.exports = {
     },
 
     searchByAuthor: (req, res) => {
-        const {author} = req.query;
+        const {search} = req.query;
 
         sequelize.query(`
-            select s.*, username from bkslf_Stories as s join bkslf_Users as u on s.author = u.user_id
-            where author = (select user_id from bkslf_Users where username like '${author}%') and is_public = true
-            order by time_posted desc;
+            select user_id, username from bkslf_Users
+            where LOWER(username) like LOWER('%${search}%') order by username;
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(dbErr => {

@@ -72,6 +72,10 @@ app.get('/messages/write', (req, res) => {
 
 app.get('/messages/direct/:otherUser', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/messages/directMsg/directMsg.html'));
+});
+
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/search/search.html'));
 })
 
 app.post("/seed", seed);

@@ -10,7 +10,7 @@ if (!author) {
 function handleWrite(e) {
     e.preventDefault();
 
-    const title = document.getElementById('title-input').value;
+    const title = document.getElementById('title-input').value.toLowerCase();
     const story = document.getElementById('story-input').value;
 
     if (!title || !story) {

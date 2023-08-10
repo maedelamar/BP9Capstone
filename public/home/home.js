@@ -7,10 +7,16 @@ const writeStoryBtn = document.querySelector('.make-story-btn');
 const recentTable = document.getElementById('recent-story-table');
 const highestRatedTable = document.getElementById('highest-rated-table');
 
-
-
 let token = sessionStorage.getItem('token');
 let userId = sessionStorage.getItem('userId');
+
+const searchForm = document.getElementById('search-form');
+searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const searchBy = document.getElementById('search-by-select').value;
+    const search = document.getElementById('search-input').value;
+    location.href = `/search?type=${searchBy}&search=${search}`;
+});
 
 if (!token) {
     logContainer.innerHTML = `<button id="login-btn" class="log-btn">Log In</button>
@@ -107,7 +113,5 @@ axios.get('/api/highest_rated_stories')
     });
 })
 .catch(err => console.log(err));
-
-
 
 writeStoryBtn.addEventListener('click', () => location.href = '/write');

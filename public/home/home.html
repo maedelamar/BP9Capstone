@@ -16,17 +16,27 @@
         </div>
     </header>
     <main>
-        <br>
         <h2 id="welcome-msg">Loading...</h2>
-        <br><br>
+        <form id="search-form">
+            <p id="search-by-part">
+                Search By: 
+                <select name="search-by-select" id="search-by-select">
+                    <option value="stories">Stories</option>
+                    <option value="author">Author</option>
+                </select>
+            </p>
+            <p id="search-part">
+                Search: 
+                <input type="text" id="search-input">
+                <button type="submit">Search</button>
+            </p>
+        </form>
         <button class="make-story-btn" hidden="true">Write a New Story</button>
-        <br><br><br><br>
         <table id="recent-story-table">
             <tr>
                 <th>Recent Stories</th>
             </tr>
         </table>
-        <br><br><br><br>
         <table id="highest-rated-table">
             <tr>
                 <th>Highest Rated</th>

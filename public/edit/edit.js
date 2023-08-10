@@ -24,7 +24,7 @@ axios.get(`/api/stories/${storyId}`)
 function handleEdit(e) {
     e.preventDefault();
 
-    const title = editTitleInput.value;
+    const title = editTitleInput.value.toLowerCase();;
     const story = editStoryInput.value;
 
     axios.put(`/api/stories/${storyId}`, {title, story})
