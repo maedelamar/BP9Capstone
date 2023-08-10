@@ -19,7 +19,9 @@ axios.get(`/api/search_${queryType}?search=${search}`)
             a.textContent = result.username;
             a.href = `/profile/${result.user_id}`;
         }
-        searchSection.appendChild(a);
+        const p = document.createElement('p');
+        p.appendChild(a);
+        searchSection.appendChild(p);
     }
 })
 .catch(err => {
