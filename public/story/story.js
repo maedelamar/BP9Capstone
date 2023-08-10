@@ -7,7 +7,6 @@ const userId = +sessionStorage.getItem('userId');
 const permission = +sessionStorage.getItem('permission');
 
 let isPublic = false;
-console.log(permission);
 
 function rateStory(e) {
     e.preventDefault();
@@ -44,6 +43,34 @@ axios.get(`/api/stories/${storyId}`)
     }
 
     if (res.data[0].author === userId) {
+        const headers = {headers: {authorization: sessionStorage.getItem('token')}};
+
+        const changePublicityBtn = document.createElement('button');
+        changePublicityBtn.id = 'change-public-btn'
+        if (isPublic) {
+            changePublicityBtn.textContent = "Make Private";
+            changePublicityBtn.addEventListener('click', () => {
+                axios.put(`/api/stories/visibility/${storyId}`, {isPublic: !isPublic}, headers)
+                .then(res => {
+                    alert("This story has been made private.");
+                    location.href = `/story/${storyId}`;
+                })
+            });
+        } else {
+            changePublicityBtn.textContent = "Make Public";
+            changePublicityBtn.addEventListener('click', () => {
+                axios.put(`/api/stories/visibility/${storyId}`, {isPublic: !isPublic}, headers)
+                .then(res => {
+                    alert("This story has been made public.");
+                    location.href = `/story/${storyId}`;
+                })
+                .catch(err => {
+                    alert("Axios error. Check the console.");
+                    console.log(err);
+                })
+            });
+        }
+
         const editLink = document.createElement('a');
         editLink.id = 'edit-link'
         editLink.textContent = 'edit';
@@ -56,7 +83,7 @@ axios.get(`/api/stories/${storyId}`)
         deleteBtn.addEventListener('click', () => {
             const willDelete = confirm("Are you sure you want to delete this story? This cannot be undone.");
             if (willDelete) {
-                axios.delete(`/api/stories/${storyId}`, {headers: {authorization: sessionStorage.getItem('token')}})
+                axios.delete(`/api/stories/${storyId}`, headers)
                 .then(res => {
                     alert("Story deleted.");
                     location.href = '/';
@@ -71,34 +98,44 @@ axios.get(`/api/stories/${storyId}`)
         storyBtnContainer = document.createElement('div');
         storyBtnContainer.id = "story-btn-container";
 
+        storyBtnContainer.appendChild(changePublicityBtn);
         storyBtnContainer.appendChild(editLink);
         storyBtnContainer.appendChild(deleteBtn);
 
         storySection.appendChild(storyBtnContainer);
     } else if (permission > 0) {
-        const deleteBtn = document.createElement('button');
-        deleteBtn.id = 'delete-btn';
-        deleteBtn.textContent = 'delete';
+        const headers = {headers: {authorization: sessionStorage.getItem('token')}};
 
-        deleteBtn.addEventListener('click', () => {
-            const willDelete = confirm("Are you sure you want to delete this story? This cannot be undone.");
-            if (willDelete) {
-                axios.delete(`/api/stories/${storyId}`, {headers: {authorization: sessionStorage.getItem('token')}})
+        const changePublicityBtn = document.createElement('button');
+        changePublicityBtn.id = 'change-public-btn'
+        if (isPublic) {
+            changePublicityBtn.textContent = "Make Private";
+            changePublicityBtn.addEventListener('click', () => {
+                axios.put(`/api/stories/visibility/${storyId}`, {isPublic: !isPublic}, headers)
                 .then(res => {
-                    alert("Story deleted.");
-                    location.href = '/';
+                    alert("This story has been made private.");
+                    location.href = `/story/${storyId}`;
+                })
+            });
+        } else {
+            changePublicityBtn.textContent = "Make Public";
+            changePublicityBtn.addEventListener('click', () => {
+                axios.put(`/api/stories/visibility/${storyId}`, {isPublic: !isPublic}, headers)
+                .then(res => {
+                    alert("This story has been made public.");
+                    location.href = `/story/${storyId}`;
                 })
                 .catch(err => {
                     alert("Axios error. Check the console.");
                     console.log(err);
-                });
-            }
-        });
+                })
+            });
+        }
 
         storyBtnContainer = document.createElement('div');
         storyBtnContainer.id = "story-btn-container";
 
-        storyBtnContainer.appendChild(deleteBtn);
+        storyBtnContainer.appendChild(changePublicityBtn);
 
         storySection.appendChild(storyBtnContainer);
     }

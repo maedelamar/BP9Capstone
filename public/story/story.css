@@ -20,8 +20,8 @@
 
 #story-btn-container {
 	display: flex;
-	justify-content: space-around;
-	width: 7%;
+	justify-content: space-evenly;
+	width: 15%;
 	margin: 10px;
 	position: relative;
 	right: 15px;
